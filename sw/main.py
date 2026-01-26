@@ -1,5 +1,6 @@
+from Subsystems.motor import Motor
 from test_led import test_led
-from test_led_pwm import test_led_pwm
+from test_servo import test_pwn
 from test_input import test_input_poll
 from test_motor import test_motor3
 from test_linear_actuator import test_actuator1
@@ -9,7 +10,6 @@ from test_mfrc522 import test_mfrc522
 from test_TMF8x01_get_distance import test_TMF8x01_get_distance
 from test_STU_22L_IO_Mode import test_STU_22L_IO_Mode
 from test_STU_22L_UART import test_STU_22L_UART
-from test_tiny_code_reader import test_tiny_code_reader
 
 print("Welcome to main.py!")
 

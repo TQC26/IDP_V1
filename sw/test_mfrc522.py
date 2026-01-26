@@ -68,7 +68,7 @@ def test_mfrc522():
                     for i in range(4):
                         uidCheck = uidCheck ^ uid[i]
                     if uidCheck != checksum:
-                        print(f"UID in card didn't match checksum uid={' '.join(hex(i) for i in uid)}, checksum={checksum}}")
+                        print(f"UID in card didn't match checksum uid={' '.join(hex(i) for i in uid)}, checksum={checksum}")
                     else:
                         # Bytes 5-15 are Manufacturer Data
                         manufacturerData = data[sector][block][5:16]
