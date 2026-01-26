@@ -1,15 +1,18 @@
 from Subsystems.motor import Motor
+from Subsystems.servo import Servo
 from test_led import test_led
 from test_servo import test_pwn
 from test_input import test_input_poll
 from test_motor import test_motor3
 from test_linear_actuator import test_actuator1
-from test_tcs3472 import test_tcs3472
-from test_vl53l0x import test_vl53l0x
+from sw.test_colour_sensor import test_tcs3472
+from sw.test_ranging_sensor import test_vl53l0x
 from test_mfrc522 import test_mfrc522
 from test_TMF8x01_get_distance import test_TMF8x01_get_distance
 from test_STU_22L_IO_Mode import test_STU_22L_IO_Mode
 from test_STU_22L_UART import test_STU_22L_UART
+from machine import Pin, SoftI2C, I2C
+from libs.tcs3472_micropython.tcs3472 import tcs3472
 
 print("Welcome to main.py!")
 
@@ -26,5 +29,68 @@ print("Welcome to main.py!")
 # test_STU_22L_IO_Mode()
 # test_STU_22L_UART()
 # test_tiny_code_reader()
+
+
+#Plan for final code
+State=0
+#Init motors
+motor_left = Motor(dirPin=2, PWMPin=3)
+motor_right = Motor(dirPin=4, PWMPin=5)
+
+
+#Init servos
+servo1 = Servo(PWMPin=28)
+servo2 = Servo(PWMPin=29)
+
+#Init sensors
+i2c_bus = I2C(id=0, sda=Pin(8), scl=Pin(9)) # I2C0 on GP8 & GP9
+# print(i2c_bus.scan()[0])  # Get the address (nb 41=0x29)
+left1 = tcs3472(i2c_bus)
+
+i2c_bus = I2C(id=0, sda=Pin(8), scl=Pin(9)) # I2C0 on GP8 & GP9
+# print(i2c_bus.scan()[0])  # Get the address (nb 41=0x29)
+left2 = tcs3472(i2c_bus)
+
+i2c_bus = I2C(id=0, sda=Pin(8), scl=Pin(9)) # I2C0 on GP8 & GP9
+# print(i2c_bus.scan()[0])  # Get the address (nb 41=0x29)
+right1 = tcs3472(i2c_bus)
+
+i2c_bus = I2C(id=0, sda=Pin(8), scl=Pin(9)) # I2C0 on GP8 & GP9
+# print(i2c_bus.scan()[0])  # Get the address (nb 41=0x29)
+right2 = tcs3472(i2c_bus)
+
+# State 0: Move front to leave starting box 
+# State 1: No reel, line following until left sees white and turn left
+# 
+# Determine rack 
+    ## if Upper rack:
+        ###Line follow 
+
+
+#State 1 --> State 2
+
+#Line follow test
+#Sensors left2, left1, right1, right2
+Kp=0.3
+Ki=0.0
+Kd=0.0
+integral=0
+last_error=0
+set_velocity=60
+
+while True:
+#Assuming no distractors, can adjust weight of 
+    error=(left1-right1+2*(left2-right2))
+    #if robot is too right, left sensor touches white line more, left1>right1, error>0
+    #if robot is too left, right sensor touches white line more, left1<right1, error<0
+    integral = error+integral
+    output=error*Kp+integral*Ki+(error-last_error)*Kd
+    last_error=error
+    motor_left.Forward(max(100,set_velocity-output))
+    motor_right.Forward(max(100,set_velocity+output))
+
+
+
+
 
 print("main.py Done!")
