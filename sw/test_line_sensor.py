@@ -12,11 +12,7 @@ def test_line_sensor():
 
     while True:
         print("Polling sensor")
-        if sens.on_line():
-            print("On line")
-            led.value(1)
-        else:
-            led.value(0)
+        led.value(sens.on_line())
         sleep(0.5)
 
 if __name__ == "__main__":
