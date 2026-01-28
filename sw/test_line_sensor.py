@@ -1,7 +1,7 @@
 from machine import Pin
 from utime import sleep
 
-from libs.line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
+from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
 
 def test_line_sensor():
     led_pin = 28  # Pin 28 = GP28 (labelled 34 on the jumper)
