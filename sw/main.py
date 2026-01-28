@@ -1,20 +1,19 @@
 from Subsystems.motor import Motor
 from Subsystems.servo import Servo
-from test_led import test_led
-from test_servo import test_pwn
-from test_input import test_input_poll
-from test_motor import test_motor3
-from test_linear_actuator import test_actuator1
-from sw.test_colour_sensor import test_tcs3472
-from sw.test_ranging_sensor import test_vl53l0x
+from machine import Pin, SoftI2C, I2C
+from libs.tcs3472_micropython.tcs3472 import tcs3472
+
+# Imports for testing - comment when done
 from test_mfrc522 import test_mfrc522
 from test_TMF8x01_get_distance import test_TMF8x01_get_distance
 from test_STU_22L_IO_Mode import test_STU_22L_IO_Mode
 from test_STU_22L_UART import test_STU_22L_UART
-from machine import Pin, SoftI2C, I2C
-from libs.tcs3472_micropython.tcs3472 import tcs3472
-
-print("Welcome to main.py!")
+from sw.test_colour_sensor import test_tcs3472
+from sw.test_ranging_sensor import test_vl53l0x
+from test_led import test_led
+from test_servo import test_pwn
+from test_input import test_input_poll
+from test_motor import test_motor3
 
 # Uncomment the test to run
 # test_led()
@@ -31,14 +30,14 @@ print("Welcome to main.py!")
 # test_tiny_code_reader()
 
 
-#Plan for final code
+# Plan for final code
 State=0
-#Init motors
+# Init motors
 motor_left = Motor(dirPin=2, PWMPin=3)
 motor_right = Motor(dirPin=4, PWMPin=5)
 
 
-#Init servos
+# Init servos
 servo1 = Servo(PWMPin=28)
 servo2 = Servo(PWMPin=29)
 
@@ -81,16 +80,10 @@ set_velocity=60
 while True:
 #Assuming no distractors, can adjust weight of 
     error=(left1-right1+2*(left2-right2))
-    #if robot is too right, left sensor touches white line more, left1>right1, error>0
-    #if robot is too left, right sensor touches white line more, left1<right1, error<0
+    # if robot is too right, left sensor touches white line more, left1>right1, error>0
+    # if robot is too left, right sensor touches white line more, left1<right1, error<0
     integral = error+integral
     output=error*Kp+integral*Ki+(error-last_error)*Kd
     last_error=error
     motor_left.Forward(max(100,set_velocity-output))
     motor_right.Forward(max(100,set_velocity+output))
-
-
-
-
-
-print("main.py Done!")
