@@ -8,21 +8,15 @@ from test_mfrc522 import test_mfrc522
 from test_TMF8x01_get_distance import test_TMF8x01_get_distance
 from test_STU_22L_IO_Mode import test_STU_22L_IO_Mode
 from test_STU_22L_UART import test_STU_22L_UART
-<<<<<<< HEAD
 from machine import Pin, SoftI2C, I2C
 from libs.tcs3472_micropython.tcs3472 import tcs3472
 from libs.line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
-
-
-print("Welcome to main.py!")
-=======
 from sw.test_colour_sensor import test_tcs3472
 from sw.test_ranging_sensor import test_vl53l0x
 from test_led import test_led
 from test_servo import test_pwn
 from test_input import test_input_poll
 from test_motor import test_motor3
->>>>>>> 56701a2f2b55da40192f3a1618183b1d7e316cc8
 
 # Uncomment the test to run
 # test_led()
@@ -90,7 +84,6 @@ while True:
     integral = error+integral
     output=error*Kp+integral*Ki+(error-last_error)*Kd
     last_error=error
-<<<<<<< HEAD
     motor_left.Forward(min(-100,max(100,set_velocity-output)))
     motor_right.Forward(min(-100,max(100,set_velocity+output)))
 
@@ -106,7 +99,3 @@ while True:
 
 
 print("main.py Done!")
-=======
-    motor_left.Forward(max(100,set_velocity-output))
-    motor_right.Forward(max(100,set_velocity+output))
->>>>>>> 56701a2f2b55da40192f3a1618183b1d7e316cc8
