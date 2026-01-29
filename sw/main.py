@@ -8,15 +8,14 @@ from test_mfrc522 import test_mfrc522
 from test_TMF8x01_get_distance import test_TMF8x01_get_distance
 from test_STU_22L_IO_Mode import test_STU_22L_IO_Mode
 from test_STU_22L_UART import test_STU_22L_UART
-from machine import Pin, SoftI2C, I2C
-from libs.tcs3472_micropython.tcs3472 import tcs3472
-from libs.line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
 from sw.test_colour_sensor import test_tcs3472
 from sw.test_ranging_sensor import test_vl53l0x
 from test_led import test_led
 from test_servo import test_pwn
 from test_input import test_input_poll
 from test_motor import test_motor3
+from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
+
 
 # Uncomment the test to run
 # test_led()
