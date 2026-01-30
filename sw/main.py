@@ -7,8 +7,8 @@ import line_to_junction
 State=0
 
 # Init motors
-motor_left = Motor(dirPin=2, PWMPin=3)
-motor_right = Motor(dirPin=5, PWMPin=4)
+motor_left = Motor(dirPin=7, PWMPin=6)
+motor_right = Motor(dirPin=4, PWMPin=5)
 
 # Init servos
 #servo1 = Servo(PWMPin=28)
@@ -20,6 +20,55 @@ left1 = DFRobot_SEN0017(22)
 right1 = DFRobot_SEN0017(26)
 right2 = DFRobot_SEN0017(27)
 
-line_to_junction(motor_left,motor_right,left2,left1,right1,right2,80) # do not require counting time for PID, just tune Ki for that
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70) # do not require counting time for PID, just tune Ki for that
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,1)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,0)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,0)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,0)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,0)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,1)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
+line_to_junction.junction_turn(motor_left,motor_right,left2,left1,right1,right2,2)
+line_to_junction.drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,70)
 
 print("main.py Done!")
