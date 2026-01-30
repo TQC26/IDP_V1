@@ -10,3 +10,4 @@ class DFRobot_SEN0017:
     '''Returns true for the sensor reading white (above a line)'''
     def on_line(self):
         return self.pin.value() == 1
+        
