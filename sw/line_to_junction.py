@@ -4,7 +4,7 @@ from Subsystems.servo import Servo
 from machine import Pin, SoftI2C, I2C
 from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
 
-def drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,speed=40):    
+def drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,speed=40,skip=0):    
     # Constants
     Kp=10
     Ki=0.01
@@ -24,10 +24,17 @@ def drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,speed=
 
         # Check Exit Condition (Junction)
         if (l2 and l1) or (r1 and r2):
-            print("Stopping.")
             motor_left.off()
             motor_right.off()
-            break
+            if skip>0:
+                time.sleep(1) #Testing purposes
+                junction_turn(motor_left,motor_right,left2,left1,right1,right2,turn_mode=2)
+                time.sleep(1) #Testing purposes
+                skip-=1
+            else:
+                print("Stopping.")
+                time.sleep(1) #Testing purposes
+                break
 
         error=(l1-r1)+8*(l2-r2)
         integral+=error
@@ -87,14 +94,8 @@ def junction_turn(motor_left,motor_right,left2,left1,right1,right2,turn_mode=0):
         motor_left.off()
         motor_right.off()
     else:
-        while True:
-            l2=left2.on_line()
-            r2=right2.on_line()
-            if l2==0 and r2==0:
-               break
-            motor_left.Forward(100)
-            motor_right.Forward(100)
-            time.sleep(0.002)
-            
+        motor_left.Forward(50)
+        motor_right.Forward(50)
+        time.sleep(0.4)
         motor_left.off()
         motor_right.off()

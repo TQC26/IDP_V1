@@ -9,5 +9,13 @@ class DFRobot_SEN0017:
 
     '''Returns true for the sensor reading white (above a line)'''
     def on_line(self):
-        return self.pin.value() == 1
+        cnt=0
+        for i in range(0,4):
+            if self.pin.value() == 1:
+                cnt+=1
+        
+        if cnt>=3:
+            return 1
+        else:
+            return 0
         
