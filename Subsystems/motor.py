@@ -11,7 +11,7 @@ class MotorArray:
 
     def forward(self, speed=100):
         for motor in motors:
-            motor.Forward(speed)
+            motor.forward(speed)
     
     def reverse(self, speed=100):
         for motor in motors:
