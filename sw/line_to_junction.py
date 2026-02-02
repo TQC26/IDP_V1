@@ -1,10 +1,11 @@
 import time
-from Subsystems.motor import Motor
+from Subsystems.motor import Motor, MOTOR_LEFT, MOTOR_RIGHT
 from Subsystems.servo import Servo
 from machine import Pin, SoftI2C, I2C
 from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
+from line_follower.FollowerArray import JUNCTION_TYPE_NONE
 
-def drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,speed=40,skip=0):    
+def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    
     # Constants
     Kp=10
     Ki=0.01
@@ -15,15 +16,11 @@ def drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,speed=
     print("Initiative move until junction...")
     
     while True:
-        # Read Sensors
-        # returns 1 for line, 0 for no line
-        l2=left2.on_line()
-        l1=left1.on_line()
-        r1=right1.on_line()
-        r2=right2.on_line()
+        # Poll Sensor Array
+        junction = sensor_array.detect_junction()
 
         # Check Exit Condition (Junction)
-        if (l2 and l1) or (r1 and r2):
+        if junction != JUNCTION_TYPE_NONE:
             motor_left.off()
             motor_right.off()
             if skip>0:
@@ -34,7 +31,7 @@ def drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,speed=
             else:
                 print("Stopping.")
                 time.sleep(1) #Testing purposes
-                break
+                return junction
 
         error=(l1-r1)+8*(l2-r2)
         integral+=error
@@ -46,13 +43,13 @@ def drive_until_junction(motor_left,motor_right,left2,left1,right1,right2,speed=
         print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
         left_speed=max(-100, min(100,speed-output))
         right_speed=max(-100, min(100,speed+output))
-        motor_left.Forward(left_speed)
-        motor_right.Forward(right_speed)
+        motor_array.adjust_speed(MOTOR_LEFT, left_speed)
+        motor_array.adjust_speed(MOTOR_RIGHT, right_speed)
         
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
         
-def junction_turn(motor_left,motor_right,left2,left1,right1,right2,turn_mode=0): #0 = turn left, 1 = turn right, 2=straight
+def junction_turn(motor_array,left2,left1,right1,right2,turn_mode=0): #0 = turn left, 1 = turn right, 2=straight
     print("turning")
     if turn_mode==0:
         while True:
