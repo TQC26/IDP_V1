@@ -24,13 +24,13 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):
             motor_left.off()
             motor_right.off()
             if skip>0:
-                time.sleep(1) #Testing purposes
+                #time.sleep(1) #Testing purposes
                 junction_turn(motor_left,motor_right,left2,left1,right1,right2,turn_mode=2)
-                time.sleep(1) #Testing purposes
+                #time.sleep(1) #Testing purposes
                 skip-=1
             else:
                 print("Stopping.")
-                time.sleep(1) #Testing purposes
+                #time.sleep(1) #Testing purposes
                 return junction
 
         error=(l1-r1)+8*(l2-r2)
@@ -54,18 +54,19 @@ def junction_turn(motor_array,left2,left1,right1,right2,turn_mode=0): #0 = turn 
     if turn_mode==0:
         while True:
             r1=right1.on_line()
-            if r1==0:
+            l1=left1.on_line()
+            if r1==0 and l1==0:
                 break
-            motor_left.Reverse(50)
-            motor_right.Forward(100)
+            motor_left.forward(25)
+            motor_right.forward(100)
             time.sleep(0.002)
             
         while True:
             r1=right1.on_line()
             if r1==1:
                 break
-            motor_left.Reverse(50)
-            motor_right.Forward(100)
+            motor_left.forward(25)
+            motor_right.forward(100)
             time.sleep(0.002)
             
         motor_left.off()
@@ -73,26 +74,27 @@ def junction_turn(motor_array,left2,left1,right1,right2,turn_mode=0): #0 = turn 
     
     elif turn_mode==1:
         while True:
+            r1=right1.on_line()
             l1=left1.on_line()
-            if l1==0:
+            if r1==0 and l1==0:
                 break
-            motor_right.Reverse(50)
-            motor_left.Forward(100)
+            motor_right.forward(25)
+            motor_left.forward(100)
             time.sleep(0.002)
             
         while True:
             l1=left1.on_line()
             if l1==1:
                 break
-            motor_right.Reverse(50)
-            motor_left.Forward(100)
+            motor_right.forward(25)
+            motor_left.forward(100)
             time.sleep(0.002)
             
         motor_left.off()
         motor_right.off()
     else:
-        motor_left.Forward(50)
-        motor_right.Forward(50)
-        time.sleep(0.4)
+        motor_left.forward(50)
+        motor_right.forward(50)
+        time.sleep(0.7)
         motor_left.off()
         motor_right.off()
