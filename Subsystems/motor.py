@@ -3,52 +3,62 @@ from utime import sleep
 
 SPIN_ANGSPEED = 15
 
+MOTOR_LEFT = 0
+MOTOR_RIGHT = 1
+
 '''An array of drive motors which can be used for steering'''
 class MotorArray:
     def __init__(self, motLeft, motRight):
         self.motors = [motLeft, motRight]
-        self.heading = 0
+        
+    '''Returns a tuple (motor_inside, motor_outside)'''
+    def _select_inside(self, direction):
+        mot_inside = self.motors[0]
+        mot_outside = self.motors[1]
+        if direction == MOTOR_RIGHT:
+            mot_inside = self.motors[1]
+            mot_outside = self.motors[0]
+            
+        return (mot_inside, mot_outside)
 
     def forward(self, speed=100):
         for motor in motors:
-            motor.Forward(speed)
+            motor.forward(speed)
     
     def reverse(self, speed=100):
         for motor in motors:
             motor.reverse(speed)
             
-    '''Come to a full stop then spin on the spot by approx. delta degrees'''
-    def spin(self, delta=90):
-        if delta == 0:
-            return
-        self.heading += delta
-
-        # Inside motor is initially set to RHS motor
-        imot_inside = 1
-        if delta < 0:
-            mot_inside = 0
-        
-        mot_inside = self.motors[imot_inside]
-        mot_outside = self.motors[len(self.motors) - imot_inside]
-        
-        mot_inside.off()
-        mot_outside.off()
+    '''Adjust speed for the specified motor to the given value.
+    Speed value can be in the range [-100 100], with negative values initiating a reverse.
+    '''
+    def adjust_speed(self, mot, newSpeed):
+        if newSpeed >= 0:
+            self.motors[mot].forward(newSpeed)
+        else:
+            self.motors[mot].reverse(abs(newSpeed))
+            
+    '''Come to a full stop then spin on the spot. Direction determines the inside motor.'''
+    def spin(self, direction=MOTOR_LEFT):
+        for motor in self.motors:
+            motor.off()
+            
+        mots = self._select_inside()
+        mot_inside = mots[0]
+        mot_outside = mots[1]
         
         mot_inside.reverse(100)
         mot_outside.forward(100)
         
-        delta_abs = delta
-        if delta_abs < 0:
-            delta_abs *= -1
-        
-        # Time here tuned by SPIN_ANGSPEED
-        sleep(delta_abs / SPIN_ANGSPEED)
-        
     '''Corner by adjusting the inside motor's speed without changing the outside.
     Creates a smooth cornering manouver'''
-    def corner(self, delta=90):
-        # TODO: Proper cornering code here
-        self.spin(delta)
+    def corner(self, direction=MOTOR_LEFT):
+        mots = self._select_inside()
+        mot_inside = mots[0]
+        mot_outside = mots[1]
+        
+        mot_inside.reverse(50)
+        mot_outside.forward(100)
         
     def get_heading(self):
         return self.heading
