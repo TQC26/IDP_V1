@@ -10,16 +10,6 @@ MOTOR_RIGHT = 1
 class MotorArray:
     def __init__(self, motLeft, motRight):
         self.motors = [motLeft, motRight]
-        
-    '''Returns a tuple (motor_inside, motor_outside)'''
-    def _select_inside(self, direction):
-        mot_inside = self.motors[0]
-        mot_outside = self.motors[1]
-        if direction == MOTOR_RIGHT:
-            mot_inside = self.motors[1]
-            mot_outside = self.motors[0]
-            
-        return (mot_inside, mot_outside)
             
     '''Adjust speed for the specified motor to the given value.
     Speed value can be in the range [-100 100], with negative values initiating a reverse.
@@ -34,17 +24,18 @@ class MotorArray:
             
     '''Come to a full stop then spin on the spot. Direction determines the inside motor.'''
     def spin(self, direction=MOTOR_LEFT):
-        for motor in self.motors:
-            motor.off()
-            
-        mots = self._select_inside(direction)
-        self.tank(mots,-100,100)
+        if direction==MOTOR_LEFT:
+            self.tank(-100,100)
+        else:
+            self.tank(100,-100)
         
     '''Corner by adjusting the inside motor's speed without changing the outside.
     Creates a smooth cornering manouver'''
     def corner(self, direction=MOTOR_LEFT):
-        mots = self._select_inside()
-        self.tank(mots,25,100)
+        if direction==MOTOR_LEFT:
+            self.tank(25,100)
+        else:
+            self.tank(100,25)
         
         
     def get_heading(self):
@@ -61,13 +52,13 @@ class Motor:
         self.pwm.duty_u16(0)
         
     def forward(self, speed=100):
-        if(speed<0): self.Reverse(speed*-1)
+        if(speed<0): self.reverse(speed*-1)
         else:   
             self.mDir.value(0)                     # forward = 0 reverse = 1 motor
             self.pwm.duty_u16(int(65535 * speed / 100))  # speed range 0-100 motor
 
     def reverse(self, speed=30):
-        if(speed<0): self.Forward(speed*-1)
+        if(speed<0): self.forward(speed*-1)
         else:
             self.mDir.value(1)
             self.pwm.duty_u16(int(65535 * speed / 100))
