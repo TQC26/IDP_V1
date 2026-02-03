@@ -5,7 +5,7 @@ from machine import Pin, SoftI2C, I2C
 from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
 from line_follower.FollowerArray import JUNCTION_TYPE_NONE
 
-def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    
+def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
     Kp=10
     Ki=0.01
@@ -21,18 +21,21 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):
 
         # Check Exit Condition (Junction)
         if junction != JUNCTION_TYPE_NONE:
-            motor_left.off()
-            motor_right.off()
+            motor_array[0].off()
+            motor_array[1].off()
             if skip>0:
                 #time.sleep(1) #Testing purposes
-                junction_turn(motor_left,motor_right,left2,left1,right1,right2,turn_mode=2)
+                junction_turn(motor_array,sensor_array,turn_mode=2)
                 #time.sleep(1) #Testing purposes
                 skip-=1
             else:
                 print("Stopping.")
                 #time.sleep(1) #Testing purposes
                 return junction
-
+        l2=sensor_array[0]
+        l1=sensor_array[1]
+        r1=sensor_array[2]
+        r2=sensor_array[3]
         error=(l1-r1)+8*(l2-r2)
         integral+=error
         derivative=error-last_error
@@ -43,58 +46,50 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):
         print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
         left_speed=max(-100, min(100,speed-output))
         right_speed=max(-100, min(100,speed+output))
-        motor_array.adjust_speed(MOTOR_LEFT, left_speed)
-        motor_array.adjust_speed(MOTOR_RIGHT, right_speed)
+        motor_array.tank(left_speed,right_speed)
         
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
         
-def junction_turn(motor_array,left2,left1,right1,right2,turn_mode=0): #0 = turn left, 1 = turn right, 2=straight
+def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = turn right, 2=straight
     print("turning")
     if turn_mode==0:
         while True:
-            r1=right1.on_line()
-            l1=left1.on_line()
+            r1=sensor_array[2].on_line()
+            l1=sensor_array[1].on_line()
             if r1==0 and l1==0:
                 break
-            motor_left.forward(25)
-            motor_right.forward(100)
+            motor_array.corner(MOTOR_LEFT)
             time.sleep(0.002)
             
         while True:
-            r1=right1.on_line()
+            r1=sensor_array[2].on_line()
             if r1==1:
                 break
-            motor_left.forward(25)
-            motor_right.forward(100)
+            motor_array.corner(MOTOR_LEFT)
             time.sleep(0.002)
             
-        motor_left.off()
-        motor_right.off()
+        motor_array.off()
     
     elif turn_mode==1:
         while True:
-            r1=right1.on_line()
-            l1=left1.on_line()
+            r1=sensor_array[2].on_line()
+            l1=sensor_array[1].on_line()
             if r1==0 and l1==0:
                 break
-            motor_right.forward(25)
-            motor_left.forward(100)
+            motor_array.corner(MOTOR_RIGHT)
             time.sleep(0.002)
             
         while True:
-            l1=left1.on_line()
+            l1=sensor_array[1].on_line()
             if l1==1:
                 break
-            motor_right.forward(25)
-            motor_left.forward(100)
+            motor_array.corner(MOTOR_RIGHT)
             time.sleep(0.002)
-            
-        motor_left.off()
-        motor_right.off()
+
+        motor_array.off()
+        
     else:
-        motor_left.forward(50)
-        motor_right.forward(50)
-        time.sleep(0.7)
-        motor_left.off()
-        motor_right.off()
+        motor_array.tank(60,60)
+        time.sleep(0.56)
+        motor_array.off()

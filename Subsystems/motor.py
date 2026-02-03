@@ -20,45 +20,32 @@ class MotorArray:
             mot_outside = self.motors[0]
             
         return (mot_inside, mot_outside)
-
-    def forward(self, speed=100):
-        for motor in motors:
-            motor.forward(speed)
-    
-    def reverse(self, speed=100):
-        for motor in motors:
-            motor.reverse(speed)
             
     '''Adjust speed for the specified motor to the given value.
     Speed value can be in the range [-100 100], with negative values initiating a reverse.
     '''
-    def adjust_speed(self, mot, newSpeed):
-        if newSpeed >= 0:
-            self.motors[mot].forward(newSpeed)
-        else:
-            self.motors[mot].reverse(abs(newSpeed))
+    def tank(self,newSpeed_left,newSpeed_right):
+            self.motors[0].forward(newSpeed_left)
+            self.motors[1].forward(newSpeed_right)
+            
+    def off(self):
+            self.motors[0].off()
+            self.motors[1].off()
             
     '''Come to a full stop then spin on the spot. Direction determines the inside motor.'''
     def spin(self, direction=MOTOR_LEFT):
         for motor in self.motors:
             motor.off()
             
-        mots = self._select_inside()
-        mot_inside = mots[0]
-        mot_outside = mots[1]
-        
-        mot_inside.reverse(100)
-        mot_outside.forward(100)
+        mots = self._select_inside(direction)
+        self.tank(mots,-100,100)
         
     '''Corner by adjusting the inside motor's speed without changing the outside.
     Creates a smooth cornering manouver'''
     def corner(self, direction=MOTOR_LEFT):
         mots = self._select_inside()
-        mot_inside = mots[0]
-        mot_outside = mots[1]
+        self.tank(mots,25,100)
         
-        mot_inside.reverse(50)
-        mot_outside.forward(100)
         
     def get_heading(self):
         return self.heading
