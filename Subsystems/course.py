@@ -6,7 +6,7 @@ ANGLE_BEHIND = 180
 
 class Node:
     def __init__(self, id, adj_0deg, adj_90deg, adj_180deg, adj_neg90deg):
-        self.node_id = id
+        self.id = id
         self.adj = [adj_0deg, adj_90deg, adj_180deg, adj_neg90deg]
         
     '''Returns the node which is adjacent to the current one at the angle
@@ -45,13 +45,13 @@ class Course:
         # Update existing adjacency lists
         # Will be on the opposite side relative to the neighboring node
         if adj_0deg >= 0 and adj_0deg < len(self.nodes):
-            self.nodes[adj_0deg].adj_180deg = id
+            self.nodes[adj_0deg].adj[2] = id
         if adj_90deg >= 0 and adj_90deg < len(self.nodes): 
-            self.nodes[adj_90deg].adj_neg90deg = id
+            self.nodes[adj_90deg].adj[3] = id
         if adj_neg90deg >= 0 and adj_neg90deg < len(self.nodes):
-            self.nodes[adj_neg90deg].adj_90deg = id
+            self.nodes[adj_neg90deg].adj[1] = id
         if adj_180deg >= 0 and adj_180deg < len(self.nodes):
-            self.nodes[adj_180deg].adj_0deg = id
+            self.nodes[adj_180deg].adj[0] = id
             
         return node
     

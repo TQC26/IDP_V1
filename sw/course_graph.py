@@ -2,8 +2,8 @@ from Subsystems.course import *
 
 '''Print the course adjacency lists for debugging'''
 def print_course(course):
-    for node in nodes:
-        print("[Node %d]: 0: %d, 90: %d, 180: %d, -90: %d", node.id, node.adj_0deg, node.adj_90deg, node.adj_180deg, node.adj_neg90deg)
+    for node in course.nodes:
+        print("[Node %d]: 0: %d, 90: %d, 180: %d, -90: %d" % (node.id, node.adj[0], node.adj[1], node.adj[2], node.adj[3]))
 
 # Defines global course adjacency list
 course = Course()
