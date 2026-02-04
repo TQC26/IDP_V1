@@ -80,10 +80,10 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,moto
             return junction
         elif junction == JUNCTION_TYPE_LEFT:
             sensor_overide[2]=1
-            sensor_overide[3]=3
+            sensor_overide[3]=1
         elif junction == JUNCTION_TYPE_RIGHT:
             sensor_overide[1]=1
-            sensor_overide[0]=3
+            sensor_overide[0]=1
         
         l2=sensor_array.array[0].on_line()*sensor_overide[0]
         l1=sensor_array.array[1].on_line()*sensor_overide[1]
@@ -147,5 +147,5 @@ def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = tur
         motor_array.off()
         
     else:
-        drive_leave_junction(motor_array,sensor_array,80)
+        drive_leave_junction(motor_array,sensor_array,95)
         motor_array.off()
