@@ -6,7 +6,7 @@ ANGLE_BEHIND = 180
 
 class Node:
     def __init__(self, id, adj_0deg, adj_90deg, adj_180deg, adj_neg90deg):
-        self.node_id = id
+        self.id = id
         self.adj = [adj_0deg, adj_90deg, adj_180deg, adj_neg90deg]
         
     '''Returns the node which is adjacent to the current one at the angle
@@ -26,9 +26,14 @@ class Node:
     
 class Course:
     def __init__(self):
-        self.nodes = [Node(0, -1, -1, -1, -1)]
-        self.last_node = 0
+        self.nodes = {0: Node(0, -1, -1, -1, -1)}
         
+    '''Update or insert adjacency entry'''
+    def _update_or_insert_adj(self, node_id, adjacent_id, adjacency_ind=0):
+        if node_id not in self.nodes:
+            self.nodes[node_id] = Node(node_id, -1, -1, -1, -1)
+
+        self.nodes[node_id].adj[adjacency_ind] = adjacent_id
         
     '''Add node inserts a node into the graph and handles updating the adjacency list
     of existing adjacent nodes (i.e you don't need to repeat it for each one).
@@ -40,18 +45,19 @@ class Course:
     def add_node(self, id, adj_0deg, adj_90deg, adj_180deg, adj_neg90deg):
         node = Node(id, adj_0deg, adj_90deg, adj_180deg, adj_neg90deg)
 
-        self.nodes.append(node)
+        self.nodes[id] = node
 
         # Update existing adjacency lists
         # Will be on the opposite side relative to the neighboring node
-        if adj_0deg >= 0 and adj_0deg < len(self.nodes):
-            self.nodes[adj_0deg].adj_180deg = id
-        if adj_90deg >= 0 and adj_90deg < len(self.nodes): 
-            self.nodes[adj_90deg].adj_neg90deg = id
-        if adj_neg90deg >= 0 and adj_neg90deg < len(self.nodes):
-            self.nodes[adj_neg90deg].adj_90deg = id
-        if adj_180deg >= 0 and adj_180deg < len(self.nodes):
-            self.nodes[adj_180deg].adj_0deg = id
+        if adj_0deg >= 0:
+            self._update_or_insert_adj(adj_0deg, id, 2)
+        if adj_90deg >= 0:
+            self._update_or_insert_adj(adj_90deg, id, 3)
+            self.nodes[adj_90deg].adj[3] = id
+        if adj_neg90deg >= 0:
+            self._update_or_insert_adj(adj_neg90deg, id, 1)
+        if adj_180deg >= 0:
+            self._update_or_insert_adj(adj_180deg, id, 0)
             
         return node
     
