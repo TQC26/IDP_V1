@@ -24,6 +24,22 @@ class Node:
 
         return self.adj[EFF_ANGLE_LOOKUP[eff_angle]]
     
+class Queue:
+    def __init__(self):
+        self.q = []
+        self.rx = 0
+ 
+    def enqueue(self, item):
+        self.q.append(item)
+ 
+    def dequeue(self):
+        # Queue empty
+        if self.rx == len(self.q):
+            return None
+        self.rx += 1
+        return self.q[self.rx - 1]
+
+
 class Course:
     def __init__(self):
         self.nodes = {0: Node(0, -1, -1, -1, -1)}
@@ -72,3 +88,29 @@ class Course:
     stub_id should be -1 unless the stub has an endpoint demarked by an ID'''
     def add_lh_stub(self, id, zdeg_direction=1, stub_id=-1):
         self.add_node(id, id - zdeg_direction, -1, id + zdeg_direction, stub_id)
+        
+    '''Calculates the path between start and end (which are target node IDs) which visits the fewest nodes'''
+    def shortest_path(self, start, end):
+        parents = {start: -1}
+        queue = Queue()
+        cur = start
+ 
+        while cur is not None and cur != end:
+            for node in self.nodes[cur].adj:
+                if node == -1:
+                    continue
+                # If in parents, must have been visited already
+                if node not in parents:
+                    queue.enqueue(node)
+                    parents[node] = cur
+                    
+            cur = queue.dequeue()
+            
+        # Backtrack through min-tree to start point, recording nodes passed
+        seq = []
+        cur = end
+        while cur != start:
+            seq.append(cur)
+            cur = parents[cur]
+
+        return seq[::-1]
