@@ -3,7 +3,7 @@ from Subsystems.motor import Motor, MOTOR_LEFT, MOTOR_RIGHT
 from Subsystems.servo import Servo
 from machine import Pin, SoftI2C, I2C
 from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
-from line_follower.FollowerArray import JUNCTION_TYPE_NONE
+from line_follower.FollowerArray import JUNCTION_TYPE_LEFT, JUNCTION_TYPE_NONE, JUNCTION_TYPE_RIGHT
 
 button_pin = 16
 button = Pin(button_pin, Pin.IN, Pin.PULL_DOWN)
@@ -44,6 +44,51 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_l
         l1=sensor_array.array[1].on_line()
         r1=sensor_array.array[2].on_line()
         r2=sensor_array.array[3].on_line()
+        error=(l1-r1)+8*(l2-r2)
+        integral+=error
+        derivative=error-last_error
+        output=(error*Kp)+(integral*Ki)+(derivative*Kd)
+        last_error = error
+
+        # 5. Apply to Motors
+        print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
+        left_speed=max(-100, min(100,speed-output))
+        right_speed=max(-100, min(100,speed+output))
+        motor_array.tank(left_speed,right_speed)
+        
+        # Tiny sleep to stabilize reading
+        time.sleep(0.002)
+        
+def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,motor_right,left2,left1,right1,right2
+    # Constants
+    Kp=10
+    Ki=0.01
+    Kd=0.01
+    integral=0
+    last_error=0
+    
+    while True:
+        # Poll Sensor Array
+        hardstop(motor_array)
+        junction = sensor_array.detect_junction()
+
+        sensor_overide=[0,0,0,0]
+        # Check Exit Condition (Junction)
+        if junction == JUNCTION_TYPE_NONE:
+            motor_array.off()
+            print("Stopping.")
+            return junction
+        elif junction == JUNCTION_TYPE_LEFT:
+            sensor_overide[2]=1
+            sensor_overide[3]=3
+        elif junction == JUNCTION_TYPE_RIGHT:
+            sensor_overide[1]=1
+            sensor_overide[0]=3
+        
+        l2=sensor_array.array[0].on_line()*sensor_overide[0]
+        l1=sensor_array.array[1].on_line()*sensor_overide[1]
+        r1=sensor_array.array[2].on_line()*sensor_overide[2]
+        r2=sensor_array.array[3].on_line()*sensor_overide[3]
         error=(l1-r1)+8*(l2-r2)
         integral+=error
         derivative=error-last_error
@@ -102,6 +147,5 @@ def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = tur
         motor_array.off()
         
     else:
-        motor_array.tank(70,70)
-        time.sleep(0.5)
+        drive_leave_junction(motor_array,sensor_array,80)
         motor_array.off()
