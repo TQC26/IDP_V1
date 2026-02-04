@@ -2,7 +2,8 @@ from Subsystems.course import *
 
 '''Print the course adjacency lists for debugging'''
 def print_course(course):
-    for node in course.nodes:
+    for node_id in course.nodes:
+        node = course.nodes[node_id]
         print("[Node %d]: 0: %d, 90: %d, 180: %d, -90: %d" % (node.id, node.adj[0], node.adj[1], node.adj[2], node.adj[3]))
 
 # Defines global course adjacency list
@@ -52,17 +53,17 @@ course.add_node(21, 23, 20, -1, -1)
 course.add_node(22, 24, -1, -1, 20)
 
 # Rack A upper bays
-bay_a1u = course.add_lh_stub(23, 2)
-bay_a2u = course.add_lh_stub(25, 2)
-bay_a3u = course.add_lh_stub(27, 2)
-bay_a4u = course.add_lh_stub(29, 2)
-bay_a5u = course.add_lh_stub(31, 2)
-bay_a6u = course.add_lh_stub(33, 2)
+bay_a1u = course.add_lh_stub(23, -2)
+bay_a2u = course.add_lh_stub(25, -2)
+bay_a3u = course.add_lh_stub(27, -2)
+bay_a4u = course.add_lh_stub(29, -2)
+bay_a5u = course.add_lh_stub(31, -2)
+bay_a6u = course.add_node(33, -1, -1, 31, -1)   # Special case due to track end
 
 # Rack B upper bays
-bay_a1u = course.add_rh_stub(24, 2)
-bay_a2u = course.add_rh_stub(26, 2)
-bay_a3u = course.add_rh_stub(28, 2)
-bay_a4u = course.add_rh_stub(30, 2)
-bay_a5u = course.add_rh_stub(32, 2)
-bay_a6u = course.add_rh_stub(34, 2)
+bay_b1u = course.add_rh_stub(24, 2)
+bay_b2u = course.add_rh_stub(26, 2)
+bay_b3u = course.add_rh_stub(28, 2)
+bay_b4u = course.add_rh_stub(30, 2)
+bay_b5u = course.add_rh_stub(32, 2)
+bay_b6u = course.add_node(34, -1, -1, 32, -1)   # Special case due to track end
