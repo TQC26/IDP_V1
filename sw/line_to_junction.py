@@ -31,9 +31,11 @@ def align(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,rig
             last_false=1
         if last_false==0:
             motor_array.tank(50,5)
+            last_false=1
             time.sleep(0.2)
         else:
             motor_array.tank(5,50)
+            last_false=0
             time.sleep(0.2)
     #Place the reel        
 
@@ -89,6 +91,7 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_l
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
         
+#DO NOT EDIT     
 def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
     Kp=5

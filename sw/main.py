@@ -7,6 +7,8 @@ from sw.libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
 from sw.libs.VL53L0X.VL53L0X import VL53L0X
 import time
 
+from sw.line_to_junction import drive_until_junction
+
 State=0
 
 # Init motors
@@ -46,6 +48,8 @@ tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eC
 line_following.line_following_test(mot_arr,sens_arr)
 '''
 #Starting Position
+drive_until_junction(mot_arr, sens_arr,90,skip=0)
+
 '''
 Go forward till junction (35)
 35-->37
