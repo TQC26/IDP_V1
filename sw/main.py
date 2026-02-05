@@ -42,5 +42,24 @@ while(tof_sens.begin() != 0):
     time.sleep(0.5)
 tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eCOMBINE) #change to ePROXIMITY / eDISTANCE if needed
 
-#Line Following Test
+'''#Line Following Test
 line_following.line_following_test(mot_arr,sens_arr)
+'''
+#Starting Position
+'''
+Go forward till junction (35)
+35-->37
+Intake Seq & 180 turn
+37--> Wherever it detects
+Junction Seq
+-->36
+Intake Seq & 180 turn
+36--> Wherever it detects
+Junction Seq
+Intake Seq & 180 turn
+38--> Wherever it detects
+Junction Seq
+Intake Seq & 180 turn
+39--> Wherever it detects
+Junction Seq
+'''

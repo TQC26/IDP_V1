@@ -13,9 +13,39 @@ def hardstop(motor_array):
         motor_array.off()
         time.sleep(100)
 
+def align(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
+    # Constants
+    last_false=0 #0 is left, 1 is right
+    cnt=0
+    while True:
+        l1=sensor_array.array[1].on_line()
+        r1=sensor_array.array[2].on_line()
+        if l1==0 and r1==0:
+            cnt+=1
+        if cnt>3:
+            motor_array.off()
+            break
+        if l1==0:
+            last_false=0
+        elif r1==0:
+            last_false=1
+        if last_false==0:
+            motor_array.tank(50,5)
+            time.sleep(0.2)
+        else:
+            motor_array.tank(5,50)
+            time.sleep(0.2)
+    #Place the reel        
+
+def junction_placement(motor_array,senssor_array,speed=40):
+    motor_array.tank(100,100)
+    time.sleep(0.5)
+    while True:
+        hardstop(motor_array)        
+
 def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
-    Kp=10
+    Kp=5
     Ki=0.01
     Kd=0.01
     integral=0
@@ -61,7 +91,7 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_l
         
 def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
-    Kp=10
+    Kp=5
     Ki=0.01
     Kd=0.01
     integral=0
