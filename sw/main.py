@@ -44,5 +44,3 @@ tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eC
 
 #Line Following Test
 line_following.line_following_test(mot_arr,sens_arr)
-
-print("main.py Done!")
