@@ -8,7 +8,7 @@ class Node:
     def __init__(self, id, adj_0deg, adj_90deg, adj_180deg, adj_neg90deg):
         self.id = id
         self.adj = [adj_0deg, adj_90deg, adj_180deg, adj_neg90deg]
-        
+ 
     '''Returns the node which is adjacent to the current one at the angle
     measured relative to the heading (i.e 0 deg is straight ahead and 90 is right).
 
@@ -24,6 +24,20 @@ class Node:
 
         return self.adj[EFF_ANGLE_LOOKUP[eff_angle]]
     
+    '''Find the angle that an adjacent node is at relative to this node.
+    Throws an exception if the node is not adjacent.'''
+    def find_adjacent_ang(self, node_id):
+        if self.adj[0] == node_id:
+            return ANGLE_AHEAD
+        elif self.adj[1] == node_id:
+            return ANGLE_RIGHT
+        elif self.adj[2] == node_id:
+            return ANGLE_BEHIND
+        elif self.adj[3] == node_id:
+            return ANGLE_LEFT
+        else:
+            raise ValueError(f"Node {node_id} is not adjacent to {self.id}")
+ 
 class Queue:
     def __init__(self):
         self.q = []
@@ -50,7 +64,7 @@ class Course:
             self.nodes[node_id] = Node(node_id, -1, -1, -1, -1)
 
         self.nodes[node_id].adj[adjacency_ind] = adjacent_id
-        
+ 
     '''Add node inserts a node into the graph and handles updating the adjacency list
     of existing adjacent nodes (i.e you don't need to repeat it for each one).
 
@@ -76,19 +90,19 @@ class Course:
             self._update_or_insert_adj(adj_180deg, id, 0)
             
         return node
-    
+ 
     '''Adds a right hand bend to the track with a finite length (i.e a bay track etc.).
     zdeg direction is use to work out the adjacent node at 0/180 degrees (basically difference from previous/next node).
     stub_id should be -1 unless the stub has an endpoint demarked by an ID'''
     def add_rh_stub(self, id, zdeg_direction=1, stub_id=-1):
         self.add_node(id, id + zdeg_direction, stub_id, id - zdeg_direction, -1)
-        
+ 
     '''Adds a left hand bend to the track with a finite length (i.e a bay track etc.)
     zdeg direction is use to work out the adjacent node at 0/180 degrees (basically difference from previous/next node).
     stub_id should be -1 unless the stub has an endpoint demarked by an ID'''
     def add_lh_stub(self, id, zdeg_direction=1, stub_id=-1):
         self.add_node(id, id - zdeg_direction, -1, id + zdeg_direction, stub_id)
-        
+ 
     '''Calculates the path between start and end (which are target node IDs) which visits the fewest nodes'''
     def shortest_path(self, start, end):
         parents = {start: -1}
@@ -105,7 +119,7 @@ class Course:
                     parents[node] = cur
                     
             cur = queue.dequeue()
-            
+
         # Backtrack through min-tree to start point, recording nodes passed
         seq = []
         cur = end
