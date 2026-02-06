@@ -1,4 +1,4 @@
-import sw.line_to_junction as ltj
+import line_to_junction as ltj
 
 TURN_MODE_LOOKUP = {
         0: 2,   # Drive straight

@@ -3,11 +3,11 @@ from Subsystems.servo import Servo
 from machine import Pin, SoftI2C, I2C
 from line_follower.FollowerArray import FollowerArray
 import line_following
-from sw.libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
-from sw.libs.VL53L0X.VL53L0X import VL53L0X
+from libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
+from libs.VL53L0X.VL53L0X import VL53L0X
 import time
 
-from sw.line_to_junction import drive_until_junction
+from line_to_junction import drive_until_junction
 
 State=0
 
