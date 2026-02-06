@@ -1,15 +1,15 @@
 from Subsystems.motor import MOTOR_LEFT, MOTOR_RIGHT, Motor, MotorArray
 from Subsystems.servo import Servo
+from Subsystems.navigation import Location
+import course_graph as crs
 from machine import Pin, SoftI2C, I2C
 from line_follower.FollowerArray import FollowerArray
 import line_following
+from line_to_junction import drive_until_junction
 from libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
 from libs.VL53L0X.VL53L0X import VL53L0X
 import time
 
-from line_to_junction import drive_until_junction
-
-State=0
 
 # Init motors
 motor_left = Motor(dirPin=7, PWMPin=6)
@@ -44,11 +44,18 @@ while(tof_sens.begin() != 0):
     time.sleep(0.5)
 tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eCOMBINE) #change to ePROXIMITY / eDISTANCE if needed
 
+# Init navigation
+location = Location(35, mot_arr, sens_arr, crs.course)
+
 '''#Line Following Test
 line_following.line_following_test(mot_arr,sens_arr)
 '''
 #Starting Position
 drive_until_junction(mot_arr, sens_arr,90,skip=0)
+
+# Pathfinding test
+from test_files.test_pathfinding import pathfinding_test
+pathfinding_test(location)
 
 '''
 Go forward till junction (35)
