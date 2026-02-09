@@ -21,7 +21,11 @@ class Location:
         assert -90 <= ang <= 180
         rel = ang - self.heading
         if rel > 180:
-            rel = 360 - ang
+            rel = 360 - rel
+        if rel < -90:
+            rel += 360
+
+        return rel
 
     '''Drive to a node, possibly passing by other nodes in the process''' 
     def drive_to_node(self, target, speed=40):
