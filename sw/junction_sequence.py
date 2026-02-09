@@ -8,37 +8,51 @@ import time
 
 ToF_box_constant=220
 Ranging_box_constant=220
+#0 is unknown, 1 is box
 rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom (0),Left_upper (1),Right_upper (2),Right_bottom (3)
 
-def junction_sequence(mot_arr,sens_arr,ranging_sens,tof_sens,direction=0,rack=0): #Direction:0 the rack is on the right  #1 the rack is on the left
+def junction_sequence(mot_arr,sens_arr,ranging_sens,tof_sens,rack=0):
     #Assume this sequence is run when the first junction is detected
     for i in range(1,6):
         dist=0
-        if direction==0:
+        if rack%2==0:
             #ToF
             for _ in range(3):
                 dist+=tof_sens.get_distance_mm()
                 time.sleep(0.1)
             dist/=3
-            if dist<ToF_box_constant:
+            if rack_info[rack][i]==1:
+                line_to_junction.junction_turn(mot_arr,sens_arr,2)
+                line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
+            elif dist<ToF_box_constant:
                 rack_info[rack][i]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
+                rack_info[rack][i]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2)
                 line_to_junction.junction_placement(mot_arr,sens_arr,50)
-                
-            
+                break            
         else:
             #Ranging
             for _ in range(3):
                 dist+=ranging_sens.read()
                 time.sleep(0.1)
             dist/=3
-            if dist<Ranging_box_constant:
+            if rack_info[rack][i]==1:
+                line_to_junction.junction_turn(mot_arr,sens_arr,2)
+                line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
+            elif dist<ToF_box_constant:
                 rack_info[rack][i]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
+            else:
+                rack_info[rack][i]=1
+                line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2)
+                line_to_junction.junction_placement(mot_arr,sens_arr,50)
+                break
+    #Outtake
+    
             
                 
                 
