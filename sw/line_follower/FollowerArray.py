@@ -1,4 +1,4 @@
-from DFRobot_SEN0017 import DFRobot_SEN0017
+from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
 
 JUNCTION_TYPE_NONE = 0      # No junction detected
 JUNCTION_TYPE_RIGHT = 1     # A right hand bend in the track

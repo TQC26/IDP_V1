@@ -57,19 +57,14 @@ tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eC
 line_following.line_following_test(mot_arr,sens_arr)
 '''
 
-'''
-#Starting Position
-line_to_junction.drive_until_junction(mot_arr, sens_arr,90,skip=0)
-'''
-# Pathfinding test
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)
 
-from test_files.test_pathfinding import pathfinding_test
-pathfinding_test(location)
+# Starting Position
+drive_until_junction(mot_arr, sens_arr,90,skip=0)
 
-
-line_to_junction.junction_placement(mot_arr,sens_arr,50)
+# Pathfinding test
+location.drive_to_node(24, speed=70)
 
 '''
 Go forward till junction (35)
