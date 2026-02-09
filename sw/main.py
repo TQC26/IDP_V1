@@ -6,6 +6,7 @@ from machine import Pin, SoftI2C, I2C, ADC
 from line_follower.FollowerArray import FollowerArray
 import line_following
 import line_to_junction
+import resistance_checker
 from libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
 from libs.VL53L0X.VL53L0X import VL53L0X
 import time
