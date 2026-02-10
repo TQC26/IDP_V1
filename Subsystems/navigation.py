@@ -30,12 +30,12 @@ class Location:
     '''Drive to a node, possibly passing by other nodes in the process''' 
     def drive_to_node(self, target, speed=40):
         # Calculate shortest path to destination
-        path = course.shortest_path(self.node, target)
+        path = self.course.shortest_path(self.node, target)
 
         for tgt_node in path:
-            direct = self.relative_angle(self.course[self.node].find_adjacent_ang(tgt_node))
-            junction_turn(self.motArr, self.sensArr, TURN_MODE_LOOKUP[direct])
+            direct = self.relative_angle(self.course.nodes[self.node].find_adjacent_ang(tgt_node))
+            ltj.junction_turn(self.motArr, self.sensArr, TURN_MODE_LOOKUP[direct])
 
-            self.heading = self.course[self.node].find_adjacent_ang(tgt_node)
-            drive_until_junction(self.motArr, self.sensArr, speed=speed)
+            self.heading = self.course.nodes[self.node].find_adjacent_ang(tgt_node)
+            ltj.drive_until_junction(self.motArr, self.sensArr, speed=speed)
             self.node = tgt_node
