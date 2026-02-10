@@ -21,7 +21,7 @@ class Location:
         assert -90 <= ang <= 180
         rel = ang - self.heading
         if rel > 180:
-            rel = 360 - rel
+            rel = 180 - rel
         if rel < -90:
             rel += 360
 
