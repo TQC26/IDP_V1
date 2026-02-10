@@ -33,7 +33,7 @@ right1 = 26
 right2 = 27
 sens_arr = FollowerArray([left2, left1, right1, right2])
 
-'''
+
 #Init ranging sensor
  # config I2C Bus
 i2c_bus = I2C(id=0, sda=Pin(19), scl=Pin(20))
@@ -51,17 +51,9 @@ while(tof_sens.begin() != 0):
     time.sleep(0.5)
 tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eCOMBINE) #change to ePROXIMITY / eDISTANCE if needed
 
-'''
-
-'''#Line Following Test
-line_following.line_following_test(mot_arr,sens_arr)
-'''
 
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)
-
-# Starting Position
-drive_until_junction(mot_arr, sens_arr,90,skip=0)
 
 # Pathfinding test
 location.drive_to_node(24, speed=70)

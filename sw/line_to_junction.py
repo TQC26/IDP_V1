@@ -39,7 +39,7 @@ def align(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,rig
             time.sleep(0.2)
     #Place the reel        
 
-def junction_placement(motor_array,senssor_array,speed=40):
+def junction_placement(motor_array,sensor_array,speed=40):
     motor_array.tank(100,100)
     time.sleep(0.5)
     while True:
