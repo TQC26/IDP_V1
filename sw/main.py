@@ -27,16 +27,19 @@ servo2 = Servo(PWMPin=29)
 adc0 = machine.ADC(28) # ADC0 pin is GP26
 
 #Init tracking sensors
-left2 = 21
+left2 = 17
 left1 = 22
 right1 = 26
 right2 = 27
 sens_arr = FollowerArray([left2, left1, right1, right2])
 
-
+# IMPORTANT NOTE: Do not change distance sensors to hardware I2C!
+# The sensors (due to a soldering issue) are spanning busses, which is not supported by
+# hardware I2C.
+'''
 #Init ranging sensor
  # config I2C Bus
-i2c_bus = I2C(id=0, sda=Pin(19), scl=Pin(20))
+i2c_bus = SoftI2C(id=0, sda=Pin(20), scl=Pin(19))
 # Setup vl53l0 object
 ranging_sens = VL53L0X(i2c_bus)
 ranging_sens.set_Vcsel_pulse_period(ranging_sens.vcsel_period_type[0], 18)
@@ -45,7 +48,7 @@ ranging_sens.start()
 
 #Init ToF sensor
 # config I2C Bus
-i2c_bus = I2C(id=0, sda=Pin(17), scl=Pin(18), freq=100000) 
+i2c_bus = SoftI2C(id=0, sda=Pin(17), scl=Pin(18), freq=100000)
 tof_sens = DFRobot_TMF8701(i2c_bus=i2c_bus)
 while(tof_sens.begin() != 0):
     time.sleep(0.5)
