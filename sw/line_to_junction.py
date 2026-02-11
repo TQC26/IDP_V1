@@ -24,10 +24,8 @@ def intake(motor_array,servo_array):
     servo_array[0].goto(30)
     
 def leave_intake(motor_array, sensor_array):
-    motor_array.tank(-40,-40)
-    time.sleep(0.3)
     motor_array.tank(80,-80)
-    time.sleep(0.6)
+    time.sleep(1.7)
     while True:
         hardstop(motor_array)
         motor_array.tank(50,50)
@@ -80,15 +78,11 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
 
 def offload(motor_array, servo_array):
     servo_array[0].goto(70)
-    motor_array.tank(20,20)
-    time.sleep(0.2)
     servo_array[1].goto(90)
     motor_array.tank(-40,-40)
-    time.sleep(0.1)
+    time.sleep(0.2)
     motor_array.tank(40,40)
     time.sleep(0.1)
-    motor_array.tank(-40,40)
-    time.sleep(0.3)
     servo_array[1].goto(0)
     servo_array[0].goto(0)
     
