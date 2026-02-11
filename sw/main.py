@@ -79,7 +79,7 @@ for i in intake_sequence:
         rack=1
     else:
         rack=0
-    junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack,location)
+    junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack)
     location.heading=180
     
 
