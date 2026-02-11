@@ -20,7 +20,8 @@ rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom
 
 def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
     #Assume this sequence is run when the first junction is detected
-    for i in range(1,6):
+    i=1
+    while i<=6:
         dist=0
         if rack%2==0:
             #ToF
@@ -60,3 +61,8 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 line_to_junction.junction_alignment(mot_arr,sens_arr,50)
                 line_to_junction.offload(mot_arr,servo_arr)
                 break
+        i+=1
+    
+    line_to_junction.junction_leave(mot_arr,sens_arr)
+    line_to_junction.drive_until_junction(mot_arr, sens_arr,95,i-2)
+    

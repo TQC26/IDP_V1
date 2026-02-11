@@ -53,7 +53,6 @@ while(tof_sens.begin() != 0):
     time.sleep(0.5)
 tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eCOMBINE) #change to ePROXIMITY / eDISTANCE if needed
 
-
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)
 
@@ -80,10 +79,8 @@ for i in intake_sequence:
         rack=1
     else:
         rack=0
-    junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack)
-    
-    
-    #Junction Seq
+    junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack,location)
+    location.heading=180
     
 
 

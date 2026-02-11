@@ -33,9 +33,9 @@ class MotorArray:
     Creates a smooth cornering manouver'''
     def corner(self, direction=MOTOR_LEFT):
         if direction==MOTOR_LEFT:
-            self.tank(25,100)
+            self.tank(10,100)
         else:
-            self.tank(100,25)
+            self.tank(100,10)
         
         
     def get_heading(self):

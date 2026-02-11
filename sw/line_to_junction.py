@@ -120,6 +120,40 @@ def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
 
+def junction_leave(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
+    # Constants
+    Kp=10
+    Ki=0.01
+    Kd=0.01
+    integral=0
+    last_error=0
+    speed=-70
+    
+    print("Initiative move until junction...")
+    
+    while i in range (0,500):
+        # Poll Sensor Array
+        l2=sensor_array.array[0].on_line()
+        l1=sensor_array.array[1].on_line()
+        r1=sensor_array.array[2].on_line()
+        r2=sensor_array.array[3].on_line()
+        error=(l1-r1)+8*(l2-r2)
+        integral+=error
+        derivative=error-last_error
+        output=(error*Kp)+(integral*Ki)+(derivative*Kd)
+        last_error = error
+
+        # 5. Apply to Motors
+        print(max(-100, min(100,speed+output)),max(-100, min(100,speed-output)))
+        left_speed=max(-100, min(100,speed+output))
+        right_speed=max(-100, min(100,speed-output))
+        motor_array.tank(left_speed,right_speed)
+        
+        # Tiny sleep to stabilize reading
+        time.sleep(0.002)
+    motor_array.tank(80,-80)
+    time.sleep(0.9)
+
 def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
     Kp=10
