@@ -241,8 +241,8 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,moto
 
         # 5. Apply to Motors
         print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
-        left_speed=max(-100, min(100,speed-output))
-        right_speed=max(-100, min(100,speed+output))
+        left_speed=max(-100, min(100,speed+output))
+        right_speed=max(-100, min(100,speed-output))
         motor_array.tank(left_speed,right_speed)
         
         # Tiny sleep to stabilize reading
