@@ -58,7 +58,7 @@ location = Location(35, mot_arr, sens_arr, crs.course)
 
 servo_arr=[servo1,servo2]
 # Set servos
-servo_arr[0].goto(0)
+servo_arr[0].goto(20)
 servo_arr[1].goto(0)
 
 intake_sequence=[36,37,38,39]
@@ -81,24 +81,3 @@ for i in intake_sequence:
         rack=0
     junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack)
     location.heading=180
-    
-
-
-
-'''
-Go forward till junction (35)
-35-->37
-Intake Seq & 180 turn
-37--> Wherever it detects
-Junction Seq
--->36
-Intake Seq & 180 turn
-36--> Wherever it detects
-Junction Seq
-Intake Seq & 180 turn
-38--> Wherever it detects
-Junction Seq
-Intake Seq & 180 turn
-39--> Wherever it detects
-Junction Seq
-'''
