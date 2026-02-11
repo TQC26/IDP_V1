@@ -31,11 +31,15 @@ class MotorArray:
         
     '''Corner by adjusting the inside motor's speed without changing the outside.
     Creates a smooth cornering manouver'''
-    def corner(self, direction=MOTOR_LEFT):
+    def corner(self, direction=MOTOR_LEFT, bay=False):
+        inside_speed = 25
+        if bay:
+            inside_speed = 15
+
         if direction==MOTOR_LEFT:
-            self.tank(25,100)
+            self.tank(inside_speed,100)
         else:
-            self.tank(100,25)
+            self.tank(100,inside_speed)
         
         
     def get_heading(self):

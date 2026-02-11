@@ -248,7 +248,7 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,moto
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
         
-def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = turn right, 2=straight
+def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn left, 1 = turn right, 2=straight
     print("turning")
     if turn_mode==0:
         while True:
@@ -257,7 +257,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = tur
             l1=sensor_array.array[1].on_line()
             if r1==0 and l1==0:
                 break
-            motor_array.corner(MOTOR_LEFT)
+            motor_array.corner(MOTOR_LEFT, bay=bay)
             time.sleep(0.002)
             
         while True:
@@ -265,7 +265,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = tur
             r1=sensor_array.array[2].on_line()
             if r1==1:
                 break
-            motor_array.corner(MOTOR_LEFT)
+            motor_array.corner(MOTOR_LEFT, bay=bay)
             time.sleep(0.002)
             
         motor_array.off()
@@ -277,7 +277,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = tur
             l1=sensor_array.array[1].on_line()
             if r1==0 and l1==0:
                 break
-            motor_array.corner(MOTOR_RIGHT)
+            motor_array.corner(MOTOR_RIGHT, bay=bay)
             time.sleep(0.002)
             
         while True:
@@ -285,7 +285,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0): #0 = turn left, 1 = tur
             l1=sensor_array.array[1].on_line()
             if l1==1:
                 break
-            motor_array.corner(MOTOR_RIGHT)
+            motor_array.corner(MOTOR_RIGHT, bay=bay)
             time.sleep(0.002)
 
         motor_array.off()

@@ -15,6 +15,8 @@ Dist_max=250
 Dist_TOF_min=100
 Dist_TOF_max=200
 
+RACK_JUNCTION_ADJUST_TIME = 0.6
+
 #0 is unknown, 1 is box
 rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom (0),Left_upper (1),Right_upper (2),Right_bottom (3)
 
@@ -38,9 +40,12 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
                 rack_info[rack][i - 1]=1
-                line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2)
-                line_to_junction.junction_alignment(mot_arr,sens_arr,50)
-                line_to_junction.offload(mot_arr,servo_arr)
+                mot_arr.tank(50, 50)
+                time.sleep(RACK_JUNCTION_ADJUST_TIME)
+                line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2, bay=True)
+                time.sleep(2)
+                line_to_junction.junction_alignment(mot_arr,sens_arr)
+                # line_to_junction.offload(mot_arr,servo_arr)
                 break            
         else:
             #Ranging
@@ -57,12 +62,14 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
                 rack_info[rack][i - 1]=1
-                line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2)
-                line_to_junction.junction_alignment(mot_arr,sens_arr,50)
-                line_to_junction.offload(mot_arr,servo_arr)
+                mot_arr.tank(50, 50)
+                time.sleep(RACK_JUNCTION_ADJUST_TIME)
+                line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2, bay=True)
+                line_to_junction.junction_alignment(mot_arr,sens_arr)
+                time.sleep(2)
+                # line_to_junction.offload(mot_arr,servo_arr)
                 break
         i+=1
     
     line_to_junction.junction_leave(mot_arr,sens_arr)
     line_to_junction.drive_until_junction(mot_arr, sens_arr,95,i-2)
-    
