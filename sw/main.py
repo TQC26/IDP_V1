@@ -6,6 +6,7 @@ from machine import Pin, SoftI2C, I2C, ADC
 from line_follower.FollowerArray import FollowerArray
 import line_following
 import line_to_junction
+import junction_sequence
 import resistance_checker
 from libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
 from libs.VL53L0X.VL53L0X import VL53L0X
@@ -17,11 +18,9 @@ motor_left = Motor(dirPin=7, PWMPin=6)
 motor_right = Motor(dirPin=4, PWMPin=5)
 mot_arr = MotorArray(motor_left, motor_right)
 
-'''
 # Init servos
 servo1 = Servo(PWMPin=28)
 servo2 = Servo(PWMPin=29)
-'''
 
 #Init resistance sensing
 adc0 = machine.ADC(28) # ADC0 pin is GP26
@@ -36,7 +35,7 @@ sens_arr = FollowerArray([left2, left1, right1, right2])
 # IMPORTANT NOTE: Do not change distance sensors to hardware I2C!
 # The sensors (due to a soldering issue) are spanning busses, which is not supported by
 # hardware I2C.
-'''
+
 #Init ranging sensor
  # config I2C Bus
 i2c_bus = SoftI2C(id=0, sda=Pin(20), scl=Pin(19))
@@ -58,8 +57,36 @@ tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eC
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)
 
-# Pathfinding test
-location.drive_to_node(24, speed=70)
+servo_arr=[servo1,servo2]
+# Set servos
+servo_arr[0].goto(0)
+servo_arr[1].goto(0)
+
+intake_sequence=[36,37,38,39]
+#Drive to first intake box
+for i in intake_sequence:
+    location.drive_to_node(i, speed=95)
+    line_to_junction.line_alignment(mot_arr,sens_arr)
+    line_to_junction.intake(mot_arr,sens_arr)
+    line_to_junction.leave_intake(mot_arr,sens_arr)
+    location.heading=0
+    destination=resistance_checker.reel_type_to_node(adc0)
+    location.drive_to_node(destination,speed=95)
+    if destination==17:
+        rack=3
+    elif destination==24:
+        rack=2
+    elif destination==23:
+        rack=1
+    else:
+        rack=0
+    junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack)
+    
+    
+    #Junction Seq
+    
+
+
 
 '''
 Go forward till junction (35)
