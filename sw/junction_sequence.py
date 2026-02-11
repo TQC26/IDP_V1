@@ -29,15 +29,15 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 dist+=tof_sens.get_distance_mm()
                 time.sleep(0.1)
             dist/=3
-            if rack_info[rack][i]==1:
+            if rack_info[rack][i - 1]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             elif dist<Dist_TOF_max and dist>Dist_TOF_min:
-                rack_info[rack][i]=1
+                rack_info[rack][i - 1]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
-                rack_info[rack][i]=1
+                rack_info[rack][i - 1]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2)
                 line_to_junction.junction_alignment(mot_arr,sens_arr,50)
                 line_to_junction.offload(mot_arr,servo_arr)
@@ -48,15 +48,15 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 dist+=ranging_sens.read()
                 time.sleep(0.1)
             dist/=3
-            if rack_info[rack][i]==1:
+            if rack_info[rack][i - 1]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             elif dist<Dist_max and dist>Dist_min:
-                rack_info[rack][i]=1
+                rack_info[rack][i - 1]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
-                rack_info[rack][i]=1
+                rack_info[rack][i - 1]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,(rack+1)%2)
                 line_to_junction.junction_alignment(mot_arr,sens_arr,50)
                 line_to_junction.offload(mot_arr,servo_arr)
