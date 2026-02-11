@@ -24,6 +24,8 @@ def intake(motor_array,servo_array):
     servo_array[0].goto(30)
     
 def leave_intake(motor_array, sensor_array):
+    motor_array.tank(40, 40)
+    time.sleep(1)
     motor_array.tank(80,-80)
     time.sleep(1.7)
     while True:
