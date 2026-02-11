@@ -6,8 +6,15 @@ from line_follower.FollowerArray import FollowerArray
 import line_to_junction
 import time
 
-Dist_min=50
-Dist_max=200
+# Limits for range finder
+Dist_min=100
+Dist_max=250
+
+# Limits for time of flight
+# TODO: Tune!
+Dist_TOF_min=100
+Dist_TOF_max=200
+
 #0 is unknown, 1 is box
 rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom (0),Left_upper (1),Right_upper (2),Right_bottom (3)
 
@@ -24,7 +31,7 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
             if rack_info[rack][i]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
-            elif dist>Dist_max and dist<Dist_min:
+            elif dist<Dist_TOF_max and dist>Dist_TOF_min:
                 rack_info[rack][i]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
@@ -43,7 +50,7 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
             if rack_info[rack][i]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
-            elif dist>Dist_max and dist<Dist_min:
+            elif dist<Dist_max and dist>Dist_min:
                 rack_info[rack][i]=1
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
@@ -53,12 +60,3 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 line_to_junction.junction_alignment(mot_arr,sens_arr,50)
                 line_to_junction.offload(mot_arr,servo_arr)
                 break
-    #Outtake
-    
-
-            
-                
-                
-                
-        
-    
