@@ -1,0 +1,8 @@
+#!/bin/sh
+for f in $(find -type d -name "**test_files" -prune -or -type d -name "libs" -prune -or -type d -name "support" -prune -or -type f -name "*.py" -print)
+do
+	echo "$f" >pico
+	nvim "pico"
+	diff --color=always "$f" pico
+	read prompt
+done
