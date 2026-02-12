@@ -14,19 +14,28 @@ def hardstop(motor_array):
         time.sleep(100)
 
 def intake(motor_array,servo_array):
-    servo_array[1].goto(90)
-    servo_array[0].goto(90)
+    servo_array[1].goto(60)
+    servo_array[0].goto(50)
     motor_array.tank(40,40)
-    time.sleep(0.5)
+    time.sleep(2)
     motor_array.tank(20,20)
     time.sleep(0.5)
     servo_array[1].goto(0)
-    servo_array[0].goto(30)
-    
-def leave_intake(motor_array, sensor_array):
+    time.sleep(1)
+
+    # Raise arm with forced slowness
+    for i in range(50, 20, -1):
+        servo_array[0].goto(i)
+        time.sleep(0.02)
+
+'''If ForceDirection is True, the bot will turn CCW'''
+def leave_intake(motor_array, sensor_array, forceDirection=False):
     motor_array.tank(40, 40)
     time.sleep(1)
-    motor_array.tank(80,-80)
+    if forceDirection:
+        motor_array.tank(-80, 80)
+    else:
+        motor_array.tank(80,-80)
     time.sleep(1.7)
     while True:
         hardstop(motor_array)
@@ -41,7 +50,7 @@ def leave_intake(motor_array, sensor_array):
     
 
 def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
-    Kp=10
+    Kp=20
     Ki=0.01
     Kd=0.01
     integral=0
@@ -70,7 +79,7 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
         last_error = error
 
         # 5. Apply to Motors
-        print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
+        # print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
         left_speed=max(-100, min(100,speed-output))
         right_speed=max(-100, min(100,speed+output))
         motor_array.tank(left_speed,right_speed)
@@ -79,19 +88,18 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
         time.sleep(0.002)
 
 def offload(motor_array, servo_array):
-    servo_array[0].goto(70)
-    servo_array[1].goto(90)
-    motor_array.tank(-40,-40)
-    time.sleep(0.2)
     motor_array.tank(40,40)
-    time.sleep(0.1)
-    servo_array[1].goto(0)
-    servo_array[0].goto(0)
+    time.sleep(0.2)
+    servo_array[0].goto(30)
+    servo_array[1].goto(40)
+    time.sleep(0.5)
+    motor_array.tank(-40, -40)
+    time.sleep(0.5)
     
     
 def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
-    Kp=10
+    Kp=20
     Ki=0.01
     Kd=0.01
     integral=0
@@ -100,7 +108,7 @@ def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,
     
     print("Initiative move until junction...")
     
-    for i in range (500):
+    for i in range(250):
         # Poll Sensor Array
         hardstop(motor_array)
         l2=sensor_array.array[0].on_line()
@@ -114,7 +122,7 @@ def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,
         last_error = error
 
         # 5. Apply to Motors
-        print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
+        # print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
         left_speed=max(-100, min(100,speed-output))
         right_speed=max(-100, min(100,speed+output))
         motor_array.tank(left_speed,right_speed)
@@ -124,7 +132,7 @@ def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,
 
 def junction_leave(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
-    Kp=10
+    Kp=20
     Ki=0.01
     Kd=0.01
     integral=0
@@ -139,26 +147,26 @@ def junction_leave(motor_array, sensor_array):    #motor_left,motor_right,left2,
         l1=sensor_array.array[1].on_line()
         r1=sensor_array.array[2].on_line()
         r2=sensor_array.array[3].on_line()
-        error=(l1-r1)+8*(l2-r2)
+        error=(l1-r1)+4*(l2-r2)
         integral+=error
         derivative=error-last_error
         output=(error*Kp)+(integral*Ki)+(derivative*Kd)
         last_error = error
 
         # 5. Apply to Motors
-        print(max(-100, min(100,speed+output)),max(-100, min(100,speed-output)))
+        # print(max(-100, min(100,speed+output)),max(-100, min(100,speed-output)))
         left_speed=max(-100, min(100,speed+output))
         right_speed=max(-100, min(100,speed-output))
         motor_array.tank(left_speed,right_speed)
         
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
-    motor_array.tank(80,-80)
+    motor_array.tank(-80, 80)
     time.sleep(0.9)
 
 def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
-    Kp=10
+    Kp=20
     Ki=0.01
     Kd=0.01
     integral=0
@@ -187,7 +195,7 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_l
         l1=sensor_array.array[1].on_line()
         r1=sensor_array.array[2].on_line()
         r2=sensor_array.array[3].on_line()
-        error=(l1-r1)+8*(l2-r2)
+        error=(l1-r1)+0*(l2-r2)
         integral+=error
         derivative=error-last_error
         output=(error*Kp)+(integral*Ki)+(derivative*Kd)
@@ -205,7 +213,7 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_l
 #DO NOT EDIT     
 def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
-    Kp=10
+    Kp=20
     Ki=0.01
     Kd=0.01
     integral=0
@@ -233,14 +241,14 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,moto
         l1=sensor_array.array[1].on_line()*sensor_overide[1]
         r1=sensor_array.array[2].on_line()*sensor_overide[2]
         r2=sensor_array.array[3].on_line()*sensor_overide[3]
-        error=(l1-r1)+8*(l2-r2)
+        error=(l1-r1)+0*(l2-r2)
         integral+=error
         derivative=error-last_error
         output=(error*Kp)+(integral*Ki)+(derivative*Kd)
         last_error = error
 
         # 5. Apply to Motors
-        print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
+        # print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
         left_speed=max(-100, min(100,speed+output))
         right_speed=max(-100, min(100,speed-output))
         motor_array.tank(left_speed,right_speed)
@@ -251,13 +259,16 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,moto
 def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn left, 1 = turn right, 2=straight
     print("turning")
     if turn_mode==0:
+        if bay:
+            motor_array.corner(MOTOR_LEFT, bay)
+            time.sleep(0.5)
         while True:
             hardstop(motor_array)
             r1=sensor_array.array[2].on_line()
             l1=sensor_array.array[1].on_line()
             if r1==0 and l1==0:
                 break
-            motor_array.corner(MOTOR_LEFT, bay=bay)
+            motor_array.corner(MOTOR_LEFT, bay)
             time.sleep(0.002)
             
         while True:
@@ -265,19 +276,22 @@ def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn le
             r1=sensor_array.array[2].on_line()
             if r1==1:
                 break
-            motor_array.corner(MOTOR_LEFT, bay=bay)
+            motor_array.corner(MOTOR_LEFT, bay)
             time.sleep(0.002)
             
         motor_array.off()
     
     elif turn_mode==1:
+        if bay:
+            motor_array.corner(MOTOR_RIGHT, bay)
+            time.sleep(0.5)
         while True:
             hardstop(motor_array)
             r1=sensor_array.array[2].on_line()
             l1=sensor_array.array[1].on_line()
             if r1==0 and l1==0:
                 break
-            motor_array.corner(MOTOR_RIGHT, bay=bay)
+            motor_array.corner(MOTOR_RIGHT, bay)
             time.sleep(0.002)
             
         while True:
@@ -285,7 +299,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn le
             l1=sensor_array.array[1].on_line()
             if l1==1:
                 break
-            motor_array.corner(MOTOR_RIGHT, bay=bay)
+            motor_array.corner(MOTOR_RIGHT, bay)
             time.sleep(0.002)
 
         motor_array.off()
