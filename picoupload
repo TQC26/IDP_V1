@@ -1,0 +1,15 @@
+#!/bin/sh
+sudo chmod o=rw /dev/ttyACM${PORT_NO:-3}
+
+# Copy sw contents to /
+cd sw
+for f in $(find . -type d -name "**test_files" -prune -or -type d -name "support" -prune -or -type f -name "*.py" -print)
+do
+	rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp "$f" "/pyboard/"
+done
+
+cd ..
+for f in $(find Subsystems/ -type f -name "*.py" -print)
+do
+	rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp "$f" "/pyboard/$f"
+done
