@@ -34,7 +34,7 @@ class MotorArray:
     def corner(self, direction=MOTOR_LEFT, bay=False):
         inside_speed = 25
         if bay:
-            inside_speed = 15
+            inside_speed = -85
 
         if direction==MOTOR_LEFT:
             self.tank(inside_speed,100)
