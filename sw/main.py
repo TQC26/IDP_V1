@@ -12,20 +12,19 @@ from libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
 from libs.VL53L0X.VL53L0X import VL53L0X
 import time
 
-
 # Init motors
 motor_left = Motor(dirPin=7, PWMPin=6)
 motor_right = Motor(dirPin=4, PWMPin=5)
 mot_arr = MotorArray(motor_left, motor_right)
 
 # Init servos
-servo1 = Servo(Pin(28))
-servo2 = Servo(Pin(29))
+servo1 = Servo(Pin(13))
+servo2 = Servo(Pin(15))
 
-#Init resistance sensing
+# Init resistance sensing
 adc0 = machine.ADC(28) # ADC0 pin is GP26
 
-#Init tracking sensors
+# Init tracking sensors
 left2 = 21
 left1 = 22
 right1 = 26
@@ -36,8 +35,8 @@ sens_arr = FollowerArray([left2, left1, right1, right2])
 # The sensors (due to a soldering issue) are spanning busses, which is not supported by
 # hardware I2C.
 
-#Init ranging sensor
- # config I2C Bus
+# Init ranging sensor
+# config I2C Bus
 i2c_bus = SoftI2C(sda=Pin(20), scl=Pin(19))
 # Setup vl53l0 object
 ranging_sens = VL53L0X(i2c_bus)
@@ -45,7 +44,7 @@ ranging_sens.set_Vcsel_pulse_period(ranging_sens.vcsel_period_type[0], 18)
 ranging_sens.set_Vcsel_pulse_period(ranging_sens.vcsel_period_type[1], 14)
 ranging_sens.start()
 
-#Init ToF sensor
+# Init ToF sensor
 # config I2C Bus
 i2c_bus = SoftI2C(sda=Pin(18), scl=Pin(17), freq=100000)
 tof_sens = DFRobot_TMF8701(i2c_bus=i2c_bus)
@@ -56,18 +55,22 @@ tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eC
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)
 
-servo_arr=[servo1,servo2]
+# Initial position
+line_to_junction.drive_until_junction(mot_arr, sens_arr, speed=95)
+
 # Set servos
-servo_arr[0].goto(20)
-servo_arr[1].goto(0)
+servo_arr=[servo1,servo2]
+servo_arr[0].goto(40)
+servo_arr[1].goto(60)
 
 intake_sequence=[36,37,38,39]
-#Drive to first intake box
+# Drive to first intake box
 for i in intake_sequence:
     location.drive_to_node(i, speed=95)
     line_to_junction.line_alignment(mot_arr,sens_arr)
     line_to_junction.intake(mot_arr,sens_arr)
-    line_to_junction.leave_intake(mot_arr,sens_arr)
+    # Force turning CCW if on a node too close to the bench edge
+    line_to_junction.leave_intake(mot_arr,sens_arr, forceDirection = (i == 37))
     location.heading=0
     destination=resistance_checker.reel_type_to_node(adc0)
     location.drive_to_node(destination,speed=95)
