@@ -12,6 +12,10 @@ from libs.DFRobot_TMF8x01.DFRobot_TMF8x01 import DFRobot_TMF8701
 from libs.VL53L0X.VL53L0X import VL53L0X
 import time
 
+# Print banner
+print("Starting IDP robot software")
+print("Dedicated to the memories of Ethan, Ernest, Nathan, Arielle, Peter and Michael")
+
 # Init motors
 motor_left = Motor(dirPin=7, PWMPin=6)
 motor_right = Motor(dirPin=4, PWMPin=5)
