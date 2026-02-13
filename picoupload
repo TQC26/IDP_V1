@@ -3,13 +3,13 @@ sudo chmod o=rw /dev/ttyACM${PORT_NO:-3}
 
 # Copy sw contents to /
 cd sw
-for f in $(find . -type d -name "**test_files" -prune -or -type d -name "support" -prune -or -type f -name "*.py" -print)
-do
-	rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp "$f" "/pyboard/"
-done
+rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp *.py "/pyboard/"
+[ "$1" = "-f" ] && rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp -r libs/ "/pyboard/"
+[ "$1" = "-f" ] && rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp -r line_follower/ "/pyboard/"
 
+# Copy Subsystems/ to /
 cd ..
-for f in $(find Subsystems/ -type f -name "*.py" -print)
-do
-	rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp "$f" "/pyboard/$f"
-done
+rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp -r Subsystems/ "/pyboard/"
+
+# Run from soft boot
+rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 repl
