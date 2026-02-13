@@ -10,6 +10,7 @@ def resistance(adc0):
     return(adc_voltage)
 
 def reel_type_to_node(adc0):
+    return 24
 '''
     # read ADC input on pin ADC0 as 16-bit integer (0 - 65535)
     adc_sum=0
@@ -30,4 +31,3 @@ def reel_type_to_node(adc0):
     else: # Blue, left_bottom 3=0
         return 3
 '''
-    return 24
