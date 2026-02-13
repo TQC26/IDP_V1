@@ -12,4 +12,4 @@ cd ..
 rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 cp -r Subsystems/ "/pyboard/"
 
 # Run from soft boot
-rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 repl
+rshell -p /dev/ttyACM${PORT_NO:-3} --buffer-size 512 repl "~ import sys ~ sys.exit()"
