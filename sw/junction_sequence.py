@@ -27,10 +27,10 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
         dist=0
         if rack%2==0:
             #ToF
-            for _ in range(3):
+            for _ in range(10):
                 dist+=tof_sens.get_distance_mm()
                 time.sleep(0.1)
-            dist/=3
+            dist/=10
             if rack_info[rack][i - 1]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
@@ -49,10 +49,10 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 break            
         else:
             #Ranging
-            for _ in range(3):
+            for _ in range(10):
                 dist+=ranging_sens.read()
                 time.sleep(0.1)
-            dist/=3
+            dist/=10
             if rack_info[rack][i - 1]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
@@ -74,4 +74,4 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
     line_to_junction.junction_leave(mot_arr,sens_arr,rack)
 
     if i > 2:
-        line_to_junction.drive_until_junction(mot_arr, sens_arr,95,i-3)
+        line_to_junction.drive_until_junction(mot_arr, sens_arr,75,i-3)
