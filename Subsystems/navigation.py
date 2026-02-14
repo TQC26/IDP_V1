@@ -37,5 +37,5 @@ class Location:
             ltj.junction_turn(self.motArr, self.sensArr, TURN_MODE_LOOKUP[direct])
 
             self.heading = self.course.nodes[self.node].find_adjacent_ang(tgt_node)
-            ltj.drive_until_junction(self.motArr, self.sensArr, speed=speed)
+            ltj.drive_until_junction(self.motArr, self.sensArr, speed=95)
             self.node = tgt_node

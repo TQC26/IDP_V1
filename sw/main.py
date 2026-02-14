@@ -54,7 +54,7 @@ i2c_bus = SoftI2C(sda=Pin(18), scl=Pin(17), freq=100000)
 tof_sens = DFRobot_TMF8701(i2c_bus=i2c_bus)
 while(tof_sens.begin() != 0):
     time.sleep(0.5)
-tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eCOMBINE) #change to ePROXIMITY / eDISTANCE if needed
+tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eDISTANCE) #change to ePROXIMITY / eDISTANCE if needed
 
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)

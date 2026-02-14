@@ -36,7 +36,7 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
         motor_array.tank(-80, 80)
     else:
         motor_array.tank(80,-80)
-    time.sleep(1.7)
+    time.sleep(1.75)
     while True:
         hardstop(motor_array)
         motor_array.tank(50,50)
@@ -51,8 +51,8 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
 
 def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
     Kp=20
-    Ki=0.01
-    Kd=0.01
+    Ki=0.05
+    Kd=0.05
     integral=0
     last_error=0
     speed=50
@@ -70,7 +70,7 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
             blank_cnt=0
         else:
             blank_cnt+=1
-        if blank_cnt>50:
+        if blank_cnt>100:
             break
         error=(l1-r1)+8*(l2-r2)
         integral+=error
@@ -100,22 +100,22 @@ def offload(motor_array, servo_array):
 def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
     Kp=20
-    Ki=0.01
-    Kd=0.01
+    Ki=0.05
+    Kd=0.05
     integral=0
     last_error=0
     speed=10
     
     print("Initiative move until junction...")
     
-    for i in range(250):
+    for i in range(300):
         # Poll Sensor Array
         hardstop(motor_array)
         l2=sensor_array.array[0].on_line()
         l1=sensor_array.array[1].on_line()
         r1=sensor_array.array[2].on_line()
         r2=sensor_array.array[3].on_line()
-        error=(l1-r1)+4*(l2-r2)
+        error=(l1-r1)+8*(l2-r2)
         integral+=error
         derivative=error-last_error
         output=(error*Kp)+(integral*Ki)+(derivative*Kd)
@@ -130,18 +130,18 @@ def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
 
-def junction_leave(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
+def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
     Kp=20
-    Ki=0.01
-    Kd=0.01
+    Ki=0.05
+    Kd=0.05
     integral=0
     last_error=0
     speed=-70
     
     print("Initiative move until junction...")
     
-    while i in range (0,500):
+    for i in range (0,400):
         # Poll Sensor Array
         l2=sensor_array.array[0].on_line()
         l1=sensor_array.array[1].on_line()
@@ -161,14 +161,18 @@ def junction_leave(motor_array, sensor_array):    #motor_left,motor_right,left2,
         
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
-    motor_array.tank(-80, 80)
-    time.sleep(0.9)
+    if rack%2==0:
+        motor_array.tank(-80, 80)
+        time.sleep(0.9)
+    else:
+        motor_array.tank(80, -80)
+        time.sleep(0.9)
 
 def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
     Kp=20
-    Ki=0.01
-    Kd=0.01
+    Ki=0.05
+    Kd=0.05
     integral=0
     last_error=0
     
@@ -195,7 +199,7 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_l
         l1=sensor_array.array[1].on_line()
         r1=sensor_array.array[2].on_line()
         r2=sensor_array.array[3].on_line()
-        error=(l1-r1)+0*(l2-r2)
+        error=(l1-r1)+1*(l2-r2)
         integral+=error
         derivative=error-last_error
         output=(error*Kp)+(integral*Ki)+(derivative*Kd)
@@ -211,11 +215,11 @@ def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_l
         time.sleep(0.002)
         
 #DO NOT EDIT     
-def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,motor_right,left2,left1,right1,right2
+def drive_leave_junction(motor_array,sensor_array,speed=40):  
     # Constants
     Kp=20
-    Ki=0.01
-    Kd=0.01
+    Ki=0.05
+    Kd=0.05
     integral=0
     last_error=0
     
@@ -241,7 +245,7 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,moto
         l1=sensor_array.array[1].on_line()*sensor_overide[1]
         r1=sensor_array.array[2].on_line()*sensor_overide[2]
         r2=sensor_array.array[3].on_line()*sensor_overide[3]
-        error=(l1-r1)+0*(l2-r2)
+        error=(l1-r1)+8*(l2-r2)
         integral+=error
         derivative=error-last_error
         output=(error*Kp)+(integral*Ki)+(derivative*Kd)
@@ -255,7 +259,8 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):    #motor_left,moto
         
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
-        
+    
+#Turning at junctions
 def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn left, 1 = turn right, 2=straight
     print("turning")
     if turn_mode==0:
@@ -285,6 +290,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn le
         if bay:
             motor_array.corner(MOTOR_RIGHT, bay)
             time.sleep(0.5)
+            
         while True:
             hardstop(motor_array)
             r1=sensor_array.array[2].on_line()

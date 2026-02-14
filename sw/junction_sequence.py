@@ -71,7 +71,7 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 break
         i+=1
     
-    line_to_junction.junction_leave(mot_arr,sens_arr)
+    line_to_junction.junction_leave(mot_arr,sens_arr,rack)
 
     if i > 2:
         line_to_junction.drive_until_junction(mot_arr, sens_arr,95,i-3)
