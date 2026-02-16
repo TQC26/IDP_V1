@@ -45,8 +45,8 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 mot_arr.tank(50, 50)
                 time.sleep(RACK_JUNCTION_ADJUST_TIME)
                 line_to_junction.junction_turn(mot_arr,sens_arr,1, bay=True)
-                time.sleep(2)
                 line_to_junction.junction_alignment(mot_arr,sens_arr)
+                time.sleep(2)
                 line_to_junction.offload(mot_arr,servo_arr)
                 break            
         else:

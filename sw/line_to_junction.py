@@ -99,7 +99,7 @@ def offload(motor_array, servo_array):
     motor_array.tank(40,40)
     time.sleep(0.2)
     servo_array[0].goto(30)
-    servo_array[1].goto(40)
+    servo_array[1].goto(50)
     time.sleep(0.5)
     motor_array.tank(-40, -40)
     time.sleep(0.5)
@@ -274,7 +274,8 @@ def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn le
     if turn_mode==0:
         if bay:
             motor_array.corner(MOTOR_LEFT, bay)
-            time.sleep(0.5)
+            time.sleep(0.3)
+            motor_array.off()
         while True:
             hardstop(motor_array)
             r1=sensor_array.array[2].on_line()
@@ -297,7 +298,8 @@ def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn le
     elif turn_mode==1:
         if bay:
             motor_array.corner(MOTOR_RIGHT, bay)
-            time.sleep(0.5)
+            time.sleep(0.3)
+            motor_array.off()
             
         while True:
             hardstop(motor_array)

@@ -34,8 +34,8 @@ class Location:
 
         for tgt_node in path:
             direct = self.relative_angle(self.course.nodes[self.node].find_adjacent_ang(tgt_node))
-            ltj.junction_turn(self.motArr, self.sensArr, TURN_MODE_LOOKUP[direct])
+            ltj.junction_turn(self.motArr, self.sensArr, TURN_MODE_LOOKUP[direct],False)
 
             self.heading = self.course.nodes[self.node].find_adjacent_ang(tgt_node)
-            ltj.drive_until_junction(self.motArr, self.sensArr, speed=95)
+            ltj.drive_until_junction(self.motArr, self.sensArr, speed=95,skip=0)
             self.node = tgt_node
