@@ -170,10 +170,10 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
     if rack%2==0:
-        motor_array.tank(-80, 80)
+        motor_array.tank(80, -80)
         time.sleep(0.9)
     else:
-        motor_array.tank(80, -80)
+        motor_array.tank(-80, 80)
         time.sleep(0.9)
 
 def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2

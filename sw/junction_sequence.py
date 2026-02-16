@@ -9,7 +9,7 @@ import time
 
 # Limits for range finder
 Dist_min=100
-Dist_max=210
+Dist_max=220
 
 # Limits for time of flight
 # TODO: Tune!
@@ -32,6 +32,7 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 dist+=tof_sens.get_distance_mm()
                 time.sleep(0.1)
             dist/=10
+            print(f"avg bay distance: {dist}mm")
             if rack_info[rack][i - 1]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
@@ -54,6 +55,7 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 dist+=ranging_sens.read()
                 time.sleep(0.1)
             dist/=10
+            print(f"avg bay distance: {dist}mm")
             if rack_info[rack][i - 1]==1:
                 line_to_junction.junction_turn(mot_arr,sens_arr,2)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)

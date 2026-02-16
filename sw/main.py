@@ -82,7 +82,7 @@ intake_sequence=[36,37,38,39]
 for i in intake_sequence:
     location.drive_to_node(i, speed=95)
     line_to_junction.line_alignment(mot_arr,sens_arr)
-    line_to_junction.intake(mot_arr,sens_arr)
+    line_to_junction.intake(mot_arr,servo_arr)
     # Force turning CCW if on a node too close to the bench edge
     line_to_junction.leave_intake(mot_arr,sens_arr, forceDirection = (i == 37))
     location.heading=0
