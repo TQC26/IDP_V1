@@ -32,5 +32,5 @@ def reel_type_to_node(adc0,led_arr):
         led_arr[3].value(1)
         return 3
 def lightsoff(led_arr):
-    for i in range(4):
-        led_arr[i].value(0)
+    for led in led_arr:
+        led.value(0)
