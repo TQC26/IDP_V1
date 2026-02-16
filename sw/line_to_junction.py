@@ -36,7 +36,7 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
         motor_array.tank(-80, 80)
     else:
         motor_array.tank(80,-80)
-    time.sleep(1.3)
+    time.sleep(1.0)
     
     if forceDirection:
         junction_turn(motor_array,sensor_array,turn_mode=0, bay=True)
