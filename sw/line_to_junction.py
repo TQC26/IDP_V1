@@ -20,7 +20,7 @@ def intake(motor_array,servo_array):
     time.sleep(2)
     motor_array.tank(20,20)
     time.sleep(0.5)
-    servo_array[1].goto(25)
+    servo_array[1].goto(30)
     time.sleep(1)
 
     # Raise arm with forced slowness
