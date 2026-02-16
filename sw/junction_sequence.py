@@ -4,6 +4,7 @@ from machine import Pin, SoftI2C, I2C
 from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
 from line_follower.FollowerArray import FollowerArray
 import line_to_junction
+import resistance_checker
 import time
 
 # Limits for range finder
@@ -20,7 +21,7 @@ RACK_JUNCTION_ADJUST_TIME = 0.8
 #0 is unknown, 1 is box
 rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom (0),Left_upper (1),Right_upper (2),Right_bottom (3)
 
-def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
+def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,rack=0):
     #Assume this sequence is run when the first junction is detected
     i=1
     while i<=6:
@@ -70,7 +71,7 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack=0):
                 line_to_junction.offload(mot_arr,servo_arr)
                 break
         i+=1
-    
+    resistance_checker.lightsoff(led_arr)
     line_to_junction.junction_leave(mot_arr,sens_arr,rack)
 
     if i > 2:

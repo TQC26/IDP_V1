@@ -56,6 +56,16 @@ while(tof_sens.begin() != 0):
     time.sleep(0.5)
 tof_sens.start_measurement(calib_m = tof_sens.eMODE_NO_CALIB, mode = tof_sens.eDISTANCE) #change to ePROXIMITY / eDISTANCE if needed
 
+# Init LEDs
+led_pin1 = 9
+led_pin2 = 8
+led_pin3 = 10
+led_pin4 = 11
+led1 = Pin(led_pin1, Pin.OUT)
+led2 = Pin(led_pin2, Pin.OUT)
+led3 = Pin(led_pin3, Pin.OUT)
+led4 = Pin(led_pin4, Pin.OUT)
+led_array=[led1,led2,led3,led4]
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)
 
@@ -76,7 +86,7 @@ for i in intake_sequence:
     # Force turning CCW if on a node too close to the bench edge
     line_to_junction.leave_intake(mot_arr,sens_arr, forceDirection = (i == 37))
     location.heading=0
-    destination=resistance_checker.reel_type_to_node(adc0)
+    destination=resistance_checker.reel_type_to_node(adc0,led_array)
     location.drive_to_node(destination,speed=95)
     if destination==17:
         rack=3
@@ -86,5 +96,5 @@ for i in intake_sequence:
         rack=1
     else:
         rack=0
-    junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,rack)
+    junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_array,rack)
     location.heading=180
