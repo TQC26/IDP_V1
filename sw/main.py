@@ -77,7 +77,7 @@ servo_arr=[servo1,servo2]
 servo_arr[0].goto(40)
 servo_arr[1].goto(60)
 
-intake_sequence=[36,37,38,39]
+intake_sequence=[36,37,38,39,36,37,38,39]
 # Drive to first intake box
 for i in intake_sequence:
     location.drive_to_node(i, speed=95)
@@ -98,3 +98,5 @@ for i in intake_sequence:
         rack=0
     junction_sequence.junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_array,rack)
     location.heading=180
+
+navigation.drive_to_node(start_point, speed=90)
