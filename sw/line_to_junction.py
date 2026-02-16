@@ -14,13 +14,13 @@ def hardstop(motor_array):
         time.sleep(100)
 
 def intake(motor_array,servo_array):
-    servo_array[1].goto(60)
+    servo_array[1].goto(70)
     servo_array[0].goto(50)
     motor_array.tank(40,40)
     time.sleep(2)
     motor_array.tank(20,20)
     time.sleep(0.5)
-    servo_array[1].goto(0)
+    servo_array[1].goto(25)
     time.sleep(1)
 
     # Raise arm with forced slowness
