@@ -46,7 +46,7 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
         r2=sensor_array.array[3].on_line()
         if l1+l2+r1+r2>0:
             break
-    line_alignment(motor_array, sensor_array)
+    #line_alignment(motor_array, sensor_array)
     
 
 def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
