@@ -149,7 +149,7 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
     
     print("Initiative move until junction...")
     
-    for i in range (0,100):
+    for i in range (0,200):
         # Poll Sensor Array
         l2=sensor_array.array[0].on_line()
         l1=sensor_array.array[1].on_line()
@@ -170,11 +170,11 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
         # Tiny sleep to stabilize reading
         time.sleep(0.002)
     if rack%2==0:
-        motor_array.tank(0, -80)
-        time.sleep(1.1)
+        motor_array.tank(60, -80)
+        time.sleep(1.2)
     else:
-        motor_array.tank(-80, 0)
-        time.sleep(1.1)
+        motor_array.tank(-80, 60)
+        time.sleep(1.2)
 
 def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants

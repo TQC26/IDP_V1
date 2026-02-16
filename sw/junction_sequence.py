@@ -34,11 +34,11 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
             dist/=10
             print(f"avg bay distance: {dist}mm")
             if rack_info[rack][i - 1]==1:
-                line_to_junction.junction_turn(mot_arr,sens_arr,2)
+                line_to_junction.junction_turn(mot_arr,sens_arr,2,bay=False)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             elif dist<Dist_TOF_max and dist>Dist_TOF_min:
                 rack_info[rack][i - 1]=1
-                line_to_junction.junction_turn(mot_arr,sens_arr,2)
+                line_to_junction.junction_turn(mot_arr,sens_arr,2,bay=False)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
                 rack_info[rack][i - 1]=1
@@ -58,12 +58,12 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
             print(f"avg bay distance: {dist}mm")
             if rack_info[rack][i - 1]==1:
                 print("bay occupied")
-                line_to_junction.junction_turn(mot_arr,sens_arr,2)
+                line_to_junction.junction_turn(mot_arr,sens_arr,2,bay=False)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             elif dist<Dist_max and dist>Dist_min:
                 print("bay occupied [new]")
                 rack_info[rack][i - 1]=1
-                line_to_junction.junction_turn(mot_arr,sens_arr,2)
+                line_to_junction.junction_turn(mot_arr,sens_arr,2,bay=False)
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
                 print("selecting bay")
