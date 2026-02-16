@@ -36,7 +36,14 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
         motor_array.tank(-80, 80)
     else:
         motor_array.tank(80,-80)
-    time.sleep(1.75)
+    time.sleep(1.3)
+    
+    if forceDirection:
+        junction_turn(motor_array,sensor_array,turn_mode=0, bay=False)
+    else:
+        junction_turn(motor_array,sensor_array,turn_mode=1, bay=False)
+    
+    '''
     while True:
         hardstop(motor_array)
         motor_array.tank(50,50)
@@ -46,6 +53,7 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
         r2=sensor_array.array[3].on_line()
         if l1+l2+r1+r2>0:
             break
+    '''
     #line_alignment(motor_array, sensor_array)
     
 
