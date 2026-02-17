@@ -68,7 +68,7 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
             else:
                 print("selecting bay")
                 rack_info[rack][i - 1]=1
-                mot_arr.tank(80, 80)
+                mot_arr.tank(50, 50)
                 time.sleep(RACK_JUNCTION_ADJUST_TIME)
                 line_to_junction.junction_turn(mot_arr,sens_arr,0, bay=True)
                 line_to_junction.junction_alignment(mot_arr,sens_arr)
