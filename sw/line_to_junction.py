@@ -173,10 +173,13 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
         time.sleep(0.002)
     if rack%2==0:
         motor_array.tank(60, -80)
-        time.sleep(1.25)
+        time.sleep(1.6)
+        junction_turn(motor_array,sensor_array,turn_mode=0,bay=False)
     else:
         motor_array.tank(-80, 60)
-        time.sleep(1.25)
+        time.sleep(1.6)
+        junction_turn(motor_array,sensor_array,turn_mode=1,bay=False)
+    
 
 def drive_until_junction(motor_array, sensor_array,speed=40,skip=0):    #motor_left,motor_right,left2,left1,right1,right2
     # Constants
