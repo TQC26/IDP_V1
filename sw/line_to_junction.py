@@ -16,9 +16,9 @@ def hardstop(motor_array):
         time.sleep(100)
 
 def intake(motor_array,servo_array):
-    servo_array[1].goto(90)
+    servo_array[1].goto(110)
     servo_array[0].goto(50)
-    motor_array.tank(40,40)
+    motor_array.tank(50,50)
     time.sleep(2)
     motor_array.tank(20,20)
     time.sleep(0.5)
@@ -60,7 +60,7 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
     
 
 def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
-    Kp=10
+    Kp=50
     Ki=0.05
     Kd=0.05
     integral=0
@@ -173,11 +173,11 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
         time.sleep(0.002)
     if rack%2==0:
         motor_array.tank(60, -80)
-        time.sleep(1.6)
+        time.sleep(1.8)
         junction_turn(motor_array,sensor_array,turn_mode=0,bay=False)
     else:
         motor_array.tank(-80, 60)
-        time.sleep(1.6)
+        time.sleep(1.8)
         junction_turn(motor_array,sensor_array,turn_mode=1,bay=False)
     
 

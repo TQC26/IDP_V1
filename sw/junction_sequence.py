@@ -16,7 +16,7 @@ Dist_max=250
 Dist_TOF_min=140
 Dist_TOF_max=200
 
-RACK_JUNCTION_ADJUST_TIME = 0.5
+RACK_JUNCTION_ADJUST_TIME = 0.6
 
 #0 is unknown, 1 is box
 rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom (0),Left_upper (1),Right_upper (2),Right_bottom (3)
@@ -25,6 +25,9 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
     #Assume this sequence is run when the first junction is detected
     i=1
     while i<=6:
+        mot_arr.tank(40, 40)
+        time.sleep(0.2)
+
         dist=0
         if rack%2==0:
             #ToF
