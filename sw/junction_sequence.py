@@ -16,7 +16,7 @@ Dist_max=230
 Dist_TOF_min=100
 Dist_TOF_max=230
 
-RACK_JUNCTION_ADJUST_TIME = 0.8
+RACK_JUNCTION_ADJUST_TIME = 0.5
 
 #0 is unknown, 1 is box
 rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom (0),Left_upper (1),Right_upper (2),Right_bottom (3)

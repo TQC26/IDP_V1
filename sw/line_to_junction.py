@@ -60,7 +60,7 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
     
 
 def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
-    Kp=20
+    Kp=10
     Ki=0.05
     Kd=0.05
     integral=0
@@ -82,7 +82,7 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
             blank_cnt+=1
         if blank_cnt>100:
             break
-        error=(l1-r1)+8*(l2-r2)
+        error=(l1-r1)+0*(l2-r2)
         integral+=error
         derivative=error-last_error
         output=(error*Kp)+(integral*Ki)+(derivative*Kd)
@@ -116,7 +116,7 @@ def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,
     last_error=0
     speed=10
     
-    print("Initiative move until junction...")
+    print("Aligning to line")
     
     for i in range(300):
         # Poll Sensor Array
@@ -284,7 +284,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn le
     if turn_mode==0:
         if bay:
             motor_array.corner(MOTOR_LEFT, bay)
-            time.sleep(0.3)
+            time.sleep(0.2)
             motor_array.off()
         while True:
             hardstop(motor_array)
@@ -308,7 +308,7 @@ def junction_turn(motor_array,sensor_array,turn_mode=0, bay=False): #0 = turn le
     elif turn_mode==1:
         if bay:
             motor_array.corner(MOTOR_RIGHT, bay)
-            time.sleep(0.3)
+            time.sleep(0.2)
             motor_array.off()
             
         while True:
