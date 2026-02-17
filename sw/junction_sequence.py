@@ -9,12 +9,12 @@ import time
 
 # Limits for range finder
 Dist_min=100
-Dist_max=230
+Dist_max=250
 
 # Limits for time of flight
 # TODO: Tune!
-Dist_TOF_min=100
-Dist_TOF_max=230
+Dist_TOF_min=140
+Dist_TOF_max=200
 
 RACK_JUNCTION_ADJUST_TIME = 0.5
 
