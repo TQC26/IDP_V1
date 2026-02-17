@@ -32,8 +32,9 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
         if rack%2==0:
             #ToF
             for _ in range(10):
-                dist+=tof_sens.get_distance_mm()
-                time.sleep(0.1)
+                if tof_sens.is_data_ready():
+                    dist+=tof_sens.get_distance_mm()
+                    time.sleep(0.1)
             dist/=10
             print(f"avg bay distance: {dist}mm")
             if rack_info[rack][i - 1]==1:
