@@ -13,10 +13,10 @@ Dist_max=250
 
 # Limits for time of flight
 # TODO: Tune!
-Dist_TOF_min=140
+Dist_TOF_min=100
 Dist_TOF_max=200
 
-RACK_JUNCTION_ADJUST_TIME = 0.6
+RACK_JUNCTION_ADJUST_TIME = 0.8
 
 #0 is unknown, 1 is box
 rack_info=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]] #Left_bottom (0),Left_upper (1),Right_upper (2),Right_bottom (3)
@@ -48,6 +48,8 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 mot_arr.tank(50, 50)
                 time.sleep(RACK_JUNCTION_ADJUST_TIME)
                 line_to_junction.junction_turn(mot_arr,sens_arr,1, bay=True)
+                mot_arr.tank(50,20)
+                time.sleep(1)
                 line_to_junction.junction_alignment(mot_arr,sens_arr)
                 time.sleep(2)
                 line_to_junction.offload(mot_arr,servo_arr)
@@ -74,6 +76,8 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 mot_arr.tank(50, 50)
                 time.sleep(RACK_JUNCTION_ADJUST_TIME)
                 line_to_junction.junction_turn(mot_arr,sens_arr,0, bay=True)
+                mot_arr.tank(50,20)
+                time.sleep(1)
                 line_to_junction.junction_alignment(mot_arr,sens_arr)
                 time.sleep(2)
                 line_to_junction.offload(mot_arr,servo_arr)

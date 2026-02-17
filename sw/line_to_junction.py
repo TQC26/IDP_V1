@@ -60,12 +60,12 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
     
 
 def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
-    Kp=50
+    Kp=40
     Ki=0.05
     Kd=0.05
     integral=0
     last_error=0
-    speed=50
+    speed=40
     
     print("Initiative move until junction...")
     blank_cnt=0
@@ -101,7 +101,7 @@ def offload(motor_array, servo_array):
     motor_array.tank(40,40)
     time.sleep(0.2)
     servo_array[0].goto(30)
-    servo_array[1].goto(50)
+    servo_array[1].goto(70)
     time.sleep(0.5)
     motor_array.tank(-40, -40)
     time.sleep(0.5)
@@ -118,7 +118,7 @@ def line_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,
     
     print("Aligning to line")
     
-    for i in range(300):
+    for i in range(500):
         # Poll Sensor Array
         hardstop(motor_array)
         l2=sensor_array.array[0].on_line()

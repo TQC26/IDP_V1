@@ -25,9 +25,9 @@ class MotorArray:
     '''Come to a full stop then spin on the spot. Direction determines the inside motor.'''
     def spin(self, direction=MOTOR_LEFT):
         if direction==MOTOR_LEFT:
-            self.tank(-85,100)
+            self.tank(-70,100)
         else:
-            self.tank(100,-85)
+            self.tank(100,-70)
 
     '''Corner by adjusting the inside motor's speed without changing the outside.
     Creates a smooth cornering manouver'''
