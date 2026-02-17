@@ -5,6 +5,8 @@ from machine import Pin, SoftI2C, I2C
 from line_follower.DFRobot_SEN0017 import DFRobot_SEN0017
 from line_follower.FollowerArray import JUNCTION_TYPE_LEFT, JUNCTION_TYPE_NONE, JUNCTION_TYPE_RIGHT
 
+JUNCTION_TIMEOUT_CONSTANT = 75
+
 button_pin = 16
 button = Pin(button_pin, Pin.IN, Pin.PULL_DOWN)
 
@@ -230,6 +232,8 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):
     Kd=0.05
     integral=0
     last_error=0
+
+    junction_countdown = 0
     
     while True:
         # Poll Sensor Array
@@ -245,19 +249,25 @@ def drive_leave_junction(motor_array,sensor_array,speed=40):
         elif junction == JUNCTION_TYPE_LEFT:
             sensor_overide[2]=1
             sensor_overide[3]=1
+            junction_countdown = JUNCTION_TIMEOUT_CONSTANT
         elif junction == JUNCTION_TYPE_RIGHT:
             sensor_overide[1]=1
             sensor_overide[0]=1
-        
-        l2=sensor_array.array[0].on_line()*sensor_overide[0]
-        l1=sensor_array.array[1].on_line()*sensor_overide[1]
-        r1=sensor_array.array[2].on_line()*sensor_overide[2]
-        r2=sensor_array.array[3].on_line()*sensor_overide[3]
-        error=(l1-r1)+8*(l2-r2)
-        integral+=error
-        derivative=error-last_error
-        output=(error*Kp)+(integral*Ki)+(derivative*Kd)
-        last_error = error
+            junction_countdown = JUNCTION_TIMEOUT_CONSTANT
+
+        if junction_countdown == 0:
+            l2=sensor_array.array[0].on_line()*sensor_overide[0]
+            l1=sensor_array.array[1].on_line()*sensor_overide[1]
+            r1=sensor_array.array[2].on_line()*sensor_overide[2]
+            r2=sensor_array.array[3].on_line()*sensor_overide[3]
+            error=(l1-r1)+8*(l2-r2)
+            integral+=error
+            derivative=error-last_error
+            output=(error*Kp)+(integral*Ki)+(derivative*Kd)
+            last_error = error
+        else:
+            junction_countdown -= 1
+            output = 0
 
         # 5. Apply to Motors
         # print(max(-100, min(100,speed-output)),max(-100, min(100,speed+output)))
