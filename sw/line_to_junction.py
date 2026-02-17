@@ -16,7 +16,7 @@ def hardstop(motor_array):
         time.sleep(100)
 
 def intake(motor_array,servo_array):
-    servo_array[1].goto(70)
+    servo_array[1].goto(90)
     servo_array[0].goto(50)
     motor_array.tank(40,40)
     time.sleep(2)
