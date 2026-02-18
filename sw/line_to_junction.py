@@ -105,6 +105,8 @@ def offload(motor_array, servo_array):
         time.sleep(0.2)
         motor_array.spin(MOTOR_RIGHT)
         time.sleep(0.2)
+    motor_array.tank(60, 60)
+    time.sleep(1)
     servo_array[0].goto(30)
     servo_array[1].goto(70)
     motor_array.tank(-50, -50)

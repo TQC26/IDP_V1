@@ -46,8 +46,10 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 line_to_junction.drive_until_junction(mot_arr, sens_arr,95,0)
             else:
                 rack_info[rack][i - 1]=1
-                # mot_arr.tank(50, 50)
-                # time.sleep(RACK_JUNCTION_ADJUST_TIME)
+                print("leaving junction")
+                line_to_junction.drive_leave_junction(mot_arr, sens_arr, speed=50)
+                time.sleep(0.1)
+                print("Driving to next bay")
                 line_to_junction.drive_until_junction(mot_arr, sens_arr, speed=50)
                 print("rack junction turn")
                 line_to_junction.junction_turn(mot_arr,sens_arr,1, bay=True)
@@ -77,6 +79,10 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
             else:
                 print("selecting bay")
                 rack_info[rack][i - 1]=1
+                print("leaving junction")
+                line_to_junction.drive_leave_junction(mot_arr, sens_arr, speed=50)
+                time.sleep(0.1)
+                print("Driving to next bay")
                 line_to_junction.drive_until_junction(mot_arr, sens_arr, speed=50)
                 print("rack junction turn")
                 line_to_junction.junction_turn(mot_arr,sens_arr,0, bay=True)
@@ -89,5 +95,5 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
     resistance_checker.lightsoff(led_arr)
     line_to_junction.junction_leave(mot_arr,sens_arr,rack)
 
-    if i > 2:
-        line_to_junction.drive_until_junction(mot_arr, sens_arr,75,i-3)
+    if i > 1:
+        line_to_junction.drive_until_junction(mot_arr, sens_arr,75,i-2)
