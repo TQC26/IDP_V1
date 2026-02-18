@@ -47,10 +47,10 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
             else:
                 rack_info[rack][i - 1]=1
                 print("leaving junction")
-                line_to_junction.drive_leave_junction(mot_arr, sens_arr, speed=50)
+                line_to_junction.drive_leave_junction(mot_arr, sens_arr, speed=65)
                 time.sleep(0.1)
                 print("Driving to next bay")
-                line_to_junction.drive_until_junction(mot_arr, sens_arr, speed=50)
+                line_to_junction.drive_until_junction(mot_arr, sens_arr, speed=65)
                 print("rack junction turn")
                 line_to_junction.junction_turn(mot_arr,sens_arr,1, bay=True)
                 time.sleep(0.2)
@@ -80,10 +80,10 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 print("selecting bay")
                 rack_info[rack][i - 1]=1
                 print("leaving junction")
-                line_to_junction.drive_leave_junction(mot_arr, sens_arr, speed=50)
+                line_to_junction.drive_leave_junction(mot_arr, sens_arr, speed=65)
                 time.sleep(0.1)
                 print("Driving to next bay")
-                line_to_junction.drive_until_junction(mot_arr, sens_arr, speed=50)
+                line_to_junction.drive_until_junction(mot_arr, sens_arr, speed=65)
                 print("rack junction turn")
                 line_to_junction.junction_turn(mot_arr,sens_arr,0, bay=True)
                 time.sleep(0.2)
