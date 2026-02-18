@@ -24,6 +24,8 @@ mot_arr = MotorArray(motor_left, motor_right)
 # Init servos
 servo1 = Servo(Pin(13))
 servo2 = Servo(Pin(15))
+servo1.goto(0)
+servo2.goto(120)
 
 # Init resistance sensing
 adc0 = machine.ADC(28) # ADC0 pin is GP26
