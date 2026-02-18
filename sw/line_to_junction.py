@@ -61,7 +61,7 @@ def leave_intake(motor_array, sensor_array, forceDirection=False):
 
 def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,left2,left1,right1,right2
     Kp=50
-    Ki=0.05
+    Ki=0.15
     Kd=0.05
     integral=0
     last_error=0
@@ -98,6 +98,8 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
         time.sleep(0.002)
 
 def offload(motor_array, servo_array):
+    motor_array.tank(60, 60)
+    time.sleep(1)
     for _ in range(0, 2):
         motor_array.spin(MOTOR_LEFT)
         time.sleep(0.2)
