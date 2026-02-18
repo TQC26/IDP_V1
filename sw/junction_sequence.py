@@ -9,12 +9,12 @@ import time
 
 # Limits for range finder
 Dist_min=100
-Dist_max=250
+Dist_max=300
 
 # Limits for time of flight
 # TODO: Tune!
 Dist_TOF_min=100
-Dist_TOF_max=200
+Dist_TOF_max=240
 
 RACK_JUNCTION_ADJUST_TIME = 0.9
 
@@ -54,9 +54,9 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 print("rack junction turn")
                 line_to_junction.junction_turn(mot_arr,sens_arr,1, bay=True)
                 time.sleep(0.2)
-                # mot_arr.tank(50,20)
-                # time.sleep(1)
-                line_to_junction.junction_alignment(mot_arr,sens_arr)
+                mot_arr.tank(60,60)
+                time.sleep(0.8)
+                # line_to_junction.junction_alignment(mot_arr,sens_arr)
                 # time.sleep(2)
                 line_to_junction.offload(mot_arr,servo_arr)
                 break            
@@ -87,7 +87,9 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
                 print("rack junction turn")
                 line_to_junction.junction_turn(mot_arr,sens_arr,0, bay=True)
                 time.sleep(0.2)
-                line_to_junction.junction_alignment(mot_arr,sens_arr)
+                mot_arr.tank(40, 80)
+                time.sleep(0.8)
+                # line_to_junction.junction_alignment(mot_arr,sens_arr)
                 # time.sleep(2)
                 line_to_junction.offload(mot_arr,servo_arr)
                 break
@@ -95,5 +97,5 @@ def junction_sequence(mot_arr,sens_arr,servo_arr,ranging_sens,tof_sens,led_arr,r
     resistance_checker.lightsoff(led_arr)
     line_to_junction.junction_leave(mot_arr,sens_arr,rack)
 
-    if i > 1:
-        line_to_junction.drive_until_junction(mot_arr, sens_arr,75,i-2)
+    if i > 2:
+        line_to_junction.drive_until_junction(mot_arr, sens_arr,75,i-3)

@@ -102,9 +102,9 @@ def offload(motor_array, servo_array):
     time.sleep(1)
     for _ in range(0, 2):
         motor_array.spin(MOTOR_LEFT)
-        time.sleep(0.2)
+        time.sleep(0.1)
         motor_array.spin(MOTOR_RIGHT)
-        time.sleep(0.2)
+        time.sleep(0.1)
     motor_array.tank(60, 60)
     time.sleep(1)
     servo_array[0].goto(30)
@@ -157,7 +157,7 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
     
     print("Initiative move until junction...")
     
-    for i in range (0,160):
+    for i in range (0,110):
         # Poll Sensor Array
         l2=sensor_array.array[0].on_line()
         l1=sensor_array.array[1].on_line()
@@ -179,11 +179,11 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
         time.sleep(0.002)
     if rack%2==0:
         motor_array.tank(60, -80)
-        time.sleep(1.9)
+        time.sleep(2)
         junction_turn(motor_array,sensor_array,turn_mode=0,bay=False)
     else:
         motor_array.tank(-80, 60)
-        time.sleep(1.9)
+        time.sleep(2)
         junction_turn(motor_array,sensor_array,turn_mode=1,bay=False)
     
 
