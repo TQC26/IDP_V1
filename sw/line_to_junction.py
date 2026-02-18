@@ -80,7 +80,7 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
             blank_cnt=0
         else:
             blank_cnt+=1
-        if blank_cnt>400:
+        if blank_cnt>500:
             break
         error=(l1-r1)+0*(l2-r2)
         integral+=error
@@ -98,9 +98,7 @@ def junction_alignment(motor_array, sensor_array):    #motor_left,motor_right,le
         time.sleep(0.002)
 
 def offload(motor_array, servo_array):
-    motor_array.tank(50,50)
-    time.sleep(3)
-    for i in range(0, 2):
+    for _ in range(0, 2):
         motor_array.spin(MOTOR_LEFT)
         time.sleep(0.2)
         motor_array.spin(MOTOR_RIGHT)
@@ -179,11 +177,11 @@ def junction_leave(motor_array, sensor_array,rack):    #motor_left,motor_right,l
         time.sleep(0.002)
     if rack%2==0:
         motor_array.tank(60, -80)
-        time.sleep(1.8)
+        time.sleep(1.9)
         junction_turn(motor_array,sensor_array,turn_mode=0,bay=False)
     else:
         motor_array.tank(-80, 60)
-        time.sleep(1.8)
+        time.sleep(1.9)
         junction_turn(motor_array,sensor_array,turn_mode=1,bay=False)
     
 
