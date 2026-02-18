@@ -9,12 +9,11 @@ def test_led():
         leds.append(Pin(pin, Pin.OUT))
 
     while True:
-        sleep(0.5)
         for led in leds:
             led.value(1)
-        sleep(0.5)
-        for led in leds:
+            sleep(0.5)
             led.value(0)
+            sleep(0.5)
 
 if __name__ == "__main__":
     test_led()
