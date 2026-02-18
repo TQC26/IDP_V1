@@ -68,6 +68,8 @@ led2 = Pin(led_pin2, Pin.OUT)
 led3 = Pin(led_pin3, Pin.OUT)
 led4 = Pin(led_pin4, Pin.OUT)
 led_array=[led1,led2,led3,led4]
+resistance_checker.lightsoff(led_array)
+
 # Init navigation
 location = Location(35, mot_arr, sens_arr, crs.course)
 
